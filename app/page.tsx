@@ -10,6 +10,7 @@ import {
   ArrowRight,
   ChevronRight,
   PlayCircle,
+  ChartColumn,
 } from "lucide-react";
 import Image from "next/image";
 import mainLogo from "@/assets/images/main_logo.png";
@@ -157,27 +158,40 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-6">
               {[
                 {
-                  icon: <Radio className="w-8 h-8 text-emerald-400" />,
+                  icon: <Radio className="w-8 h-8 text-[#00BC7D]" />,
                   title: "리얼타임 매치 센터",
                   desc: "초단위로 업데이트되는 실시간 스코어와 라이브 경기 흐름 분석(Momentum)을 확인하세요.",
+                  bgColor: "bg-[#00BC7D]/10",
+                  borderColor: "border-[#00BC7D]/20",
+                  hoverLine: "group-hover:via-[#00BC7D]/50",
                 },
                 {
-                  icon: <ThumbsUp className="w-8 h-8 text-emerald-400" />,
+                  icon: <ThumbsUp className="w-8 h-8 text-[#2B7FFF]" />,
                   title: "팬 평점 시스템",
                   desc: "경기가 끝난 후, 선수의 활약을 직접 평가하고 다른 팬들의 의견을 공유해보세요.",
+                  bgColor: "bg-[#2B7FFF]/10",
+                  borderColor: "border-[#2B7FFF]/20",
+                  hoverLine: "group-hover:via-[#2B7FFF]/50",
                 },
                 {
-                  icon: <BrainCircuit className="w-8 h-8 text-emerald-400" />,
+                  icon: <ChartColumn className="w-8 h-8 text-[#AD46FF]" />,
                   title: "AI 전술 및 스탯",
                   desc: "정교한 데이터 시각화를 통해 라인업 분석과 기대 득점(xG) 등 고급 스탯을 제공합니다.",
+                  bgColor: "bg-[#AD46FF]/10",
+                  borderColor: "border-[#AD46FF]/20",
+                  hoverLine: "group-hover:via-[#AD46FF]/50",
                 },
               ].map((feature, i) => (
                 <div
                   key={i}
                   className="group relative p-8 rounded-3xl bg-neutral-900 border border-white/5 hover:bg-neutral-800 transition-colors"
                 >
-                  <div className="absolute inset-x-0 -top-px h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:via-emerald-500/50 transition-colors" />
-                  <div className="mb-8 w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 group-hover:scale-110 transition-transform">
+                  <div
+                    className={`absolute inset-x-0 -top-px h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent ${feature.hoverLine} transition-colors`}
+                  />
+                  <div
+                    className={`mb-8 w-16 h-16 rounded-2xl ${feature.bgColor} flex items-center justify-center border ${feature.borderColor} group-hover:scale-110 transition-transform`}
+                  >
                     {feature.icon}
                   </div>
                   <h3 className="text-xl font-bold mb-4">{feature.title}</h3>

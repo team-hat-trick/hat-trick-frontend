@@ -194,7 +194,7 @@ export default function Home() {
         <section className="py-32 relative">
           <div className="max-w-5xl mx-auto px-6 text-center">
             <div className="relative p-12 md:p-24 rounded-[3rem] bg-gradient-to-b from-neutral-900 to-black border border-white/10 overflow-hidden">
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=2940&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-luminosity grayscale" />
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=2940&auto=format&fit=crop')] bg-cover bg-center bg-bottom opacity-100" />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
 
               <div className="relative z-10">

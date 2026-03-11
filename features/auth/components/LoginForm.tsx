@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Lock, Mail } from "lucide-react";
 import Link from "next/link";
@@ -9,6 +9,7 @@ import { loginSchema, type LoginSchema } from "../schemas/login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInAction } from "@/app/auth/action";
 import { useRouter } from "next/navigation";
+import { createBrowserSupabaseClient } from "@/lib/utils/supabase/client";
 
 const LoginForm = () => {
   const {
@@ -27,6 +28,26 @@ const LoginForm = () => {
     } else {
       alert(result.message);
     }
+  };
+
+  const handleGoogleLogin = async () => {
+    const supabase = createBrowserSupabaseClient();
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+  };
+
+  const handleKakaoLogin = async () => {
+    const supabase = createBrowserSupabaseClient();
+    await supabase.auth.signInWithOAuth({
+      provider: "kakao",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
   };
 
   return (
@@ -117,6 +138,7 @@ const LoginForm = () => {
         <button
           type="button"
           className="flex-1 bg-white h-[48px] rounded-[14px] flex items-center justify-center gap-2 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)] hover:bg-gray-100 transition-colors cursor-pointer"
+          onClick={handleGoogleLogin}
         >
           <svg
             width="16"
@@ -149,6 +171,7 @@ const LoginForm = () => {
         <button
           type="button"
           className="flex-1 bg-[#fee500] h-[48px] rounded-[14px] flex items-center justify-center gap-2 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)] hover:bg-[#ebd500] transition-colors cursor-pointer"
+          onClick={handleKakaoLogin}
         >
           <svg
             width="18"

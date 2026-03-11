@@ -1,3 +1,5 @@
+
+
 import Link from "next/link";
 import {
   Clock,
@@ -14,8 +16,14 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import mainLogo from "@/assets/images/main_logo.png";
+import { createClient } from "@/lib/utils/supabase/server";
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  console.log(user);
+
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-emerald-500/30">
       {/* Navigation */}

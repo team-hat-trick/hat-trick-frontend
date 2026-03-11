@@ -29,33 +29,21 @@ export type Database = {
         }
         Relationships: []
       }
-      user_profiles: {
+      user_profile: {
         Row: {
-          avatar_url: string | null
-          created_at: string
-          id: string
-          metadata: Json | null
-          name: string | null
-          role: string | null
-          updated_at: string
+          email: string
+          name: string
+          userId: string
         }
         Insert: {
-          avatar_url?: string | null
-          created_at?: string
-          id: string
-          metadata?: Json | null
-          name?: string | null
-          role?: string | null
-          updated_at?: string
+          email: string
+          name: string
+          userId?: string
         }
         Update: {
-          avatar_url?: string | null
-          created_at?: string
-          id?: string
-          metadata?: Json | null
-          name?: string | null
-          role?: string | null
-          updated_at?: string
+          email?: string
+          name?: string
+          userId?: string
         }
         Relationships: []
       }

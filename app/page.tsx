@@ -1,5 +1,3 @@
-
-
 import Link from "next/link";
 import {
   Clock,
@@ -17,12 +15,13 @@ import {
 import Image from "next/image";
 import mainLogo from "@/assets/images/main_logo.png";
 import { createClient } from "@/lib/utils/supabase/server";
+import { signOutAction } from "@/app/auth/action";
 
 export default async function Home() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  console.log(user);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-emerald-500/30">
@@ -36,18 +35,34 @@ export default async function Home() {
             <span className="font-bold text-lg tracking-tight">HAT-TRICK</span>
           </Link>
           <div className="flex items-center gap-6 text-sm font-medium">
-            <Link
-              href="/login"
-              className="text-white/70 hover:text-white transition-colors"
-            >
-              로그인
-            </Link>
-            <Link
-              href="/signup"
-              className="bg-white text-black px-4 py-2 rounded-full hover:bg-neutral-200 transition-colors"
-            >
-              시작하기
-            </Link>
+            {user ? (
+              <div className="flex items-center gap-4">
+                <p className="text-white/80">{`${user.user_metadata.name || user.user_metadata.full_name}님 반가워요!`}</p>
+                <form action={signOutAction}>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 border border-white/20 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all font-semibold"
+                  >
+                    로그아웃
+                  </button>
+                </form>
+              </div>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="text-white/70 hover:text-white transition-colors"
+                >
+                  로그인
+                </Link>
+                <Link
+                  href="/signup"
+                  className="bg-white text-black px-4 py-2 rounded-full hover:bg-neutral-200 transition-colors"
+                >
+                  시작하기
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>
@@ -87,12 +102,14 @@ export default async function Home() {
                 대시보드 입장하기
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link
-                href="/signup"
-                className="w-full sm:w-auto px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 transition-colors backdrop-blur-md"
-              >
-                회원가입
-              </Link>
+              {!user && (
+                <Link
+                  href="/signup"
+                  className="w-full sm:w-auto px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 transition-colors backdrop-blur-md"
+                >
+                  회원가입
+                </Link>
+              )}
             </div>
           </div>
         </section>

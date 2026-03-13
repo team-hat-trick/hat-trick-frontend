@@ -23,6 +23,18 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  let profile = null;
+  if (user) {
+    const { data: profileData } = await supabase
+      .from("user_profile")
+      .select("*")
+      .eq("user_id", user.id)
+      .single();
+    profile = profileData;
+  }
+
+  console.log(profile);
+
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-emerald-500/30">
       {/* Navigation */}
@@ -35,9 +47,18 @@ export default async function Home() {
             <span className="font-bold text-lg tracking-tight">HAT-TRICK</span>
           </Link>
           <div className="flex items-center gap-6 text-sm font-medium">
-            {user ? (
+            {profile ? (
               <div className="flex items-center gap-4">
-                <p className="text-white/80">{`${user.user_metadata.name || user.user_metadata.full_name}님 반가워요!`}</p>
+                <Link href="/onboarding" className="flex items-center gap-2">
+                  <Image
+                    src={profile.avatar_url}
+                    alt="user"
+                    width={30}
+                    height={30}
+                    className="rounded-full"
+                  />
+                  <p className="text-white/80 font-bold">{`${profile.name}님 반가워요!`}</p>
+                </Link>
                 <form action={signOutAction}>
                   <button
                     type="submit"

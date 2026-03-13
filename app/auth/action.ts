@@ -4,6 +4,8 @@ import { createClient } from "@/lib/utils/supabase/server";
 import { SignupSchema } from "@/features/auth/schemas/signup";
 import { redirect } from "next/navigation";
 import { LoginSchema } from "@/features/auth/schemas/login";
+import { success } from "zod";
+import { revalidatePath } from "next/cache";
 
 export async function signUpAction(data: SignupSchema) {
   const supabase = await createClient();
@@ -12,7 +14,7 @@ export async function signUpAction(data: SignupSchema) {
     email: data.email,
     password: data.password,
     options: {
-      emailRedirectTo: `http://localhost:3000/auth/callback`,
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_FRONT_DOMAIN}/auth/callback`,
       data: {
         full_name: data.name,
       },
@@ -53,7 +55,7 @@ export async function signInWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: "http://localhost:3000/auth/callback",
+      redirectTo: `${process.env.NEXT_PUBLIC_FRONT_DOMAIN}/auth/callback`,
       queryParams: {
         access_type: "offline",
         prompt: "select_account",
@@ -77,7 +79,7 @@ export async function signInWithKakao() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "kakao",
     options: {
-      redirectTo: "http://localhost:3000/auth/callback",
+      redirectTo: `${process.env.NEXT_PUBLIC_FRONT_DOMAIN}/auth/callback`,
     },
   });
 
@@ -99,6 +101,8 @@ export async function signInAction(data: LoginSchema) {
     password: data.password,
   });
 
+  console.error(error);
+
   if (error) {
     return {
       success: false,
@@ -113,4 +117,34 @@ export async function signOutAction() {
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect("/");
+}
+
+export async function updateProfileAction(data: {
+  nickname: string;
+  bio: string;
+  avataUrl: string;
+}) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return { success: false, messsage: "로그인 후 이용해주세요." };
+
+  const { error } = await supabase
+    .from("user_profile")
+    .update({
+      name: data.nickname,
+      bio: data.bio,
+      avatar_url: data.avataUrl,
+    })
+    .eq("user_id", user?.id);
+
+  if (error) {
+    console.error("Profile Update Error", error.message);
+    return { success: false, message: error.message };
+  }
+
+  revalidatePath("/");
+  return { success: true };
 }

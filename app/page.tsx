@@ -136,7 +136,7 @@ export default async function Home() {
         </section>
 
         {/* Floating Stats Bar */}
-        <section className="relative z-20 max-w-5xl mx-auto px-6 -mt-10 mb-32">
+        {/* <section className="relative z-20 max-w-5xl mx-auto px-6 -mt-10 mb-32">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-3xl bg-neutral-900 border border-white/10 shadow-2xl backdrop-blur-xl">
             {[
               {
@@ -174,7 +174,7 @@ export default async function Home() {
               </div>
             ))}
           </div>
-        </section>
+        </section> */}
 
         {/* Detailed Features Section */}
         <section className="py-24 relative overflow-hidden">
@@ -205,8 +205,8 @@ export default async function Home() {
               {[
                 {
                   icon: <Radio className="w-8 h-8 text-[#00BC7D]" />,
-                  title: "리얼타임 매치 센터",
-                  desc: "초단위로 업데이트되는 실시간 스코어와 라이브 경기 흐름 분석(Momentum)을 확인하세요.",
+                  title: "실시간 매치 센터",
+                  desc: "초단위로 업데이트되는 실시간 스코어와 라이브 경기 흐름 분석을 확인할 수 있어요.",
                   bgColor: "bg-[#00BC7D]/10",
                   borderColor: "border-[#00BC7D]/20",
                   hoverLine: "group-hover:via-[#00BC7D]/50",
@@ -214,7 +214,7 @@ export default async function Home() {
                 {
                   icon: <ThumbsUp className="w-8 h-8 text-[#2B7FFF]" />,
                   title: "팬 평점 시스템",
-                  desc: "경기가 끝난 후, 선수의 활약을 직접 평가하고 다른 팬들의 의견을 공유해보세요.",
+                  desc: "경기가 끝난 후, 선수의 활약을 직접 평가하고 다른 팬들과 소통할 수 있어요.",
                   bgColor: "bg-[#2B7FFF]/10",
                   borderColor: "border-[#2B7FFF]/20",
                   hoverLine: "group-hover:via-[#2B7FFF]/50",
@@ -222,7 +222,7 @@ export default async function Home() {
                 {
                   icon: <ChartColumn className="w-8 h-8 text-[#AD46FF]" />,
                   title: "AI 전술 및 스탯",
-                  desc: "정교한 데이터 시각화를 통해 라인업 분석과 기대 득점(xG) 등 고급 스탯을 제공합니다.",
+                  desc: "정교한 데이터 시각화를 통해 라인업 분석과 기대 득점(xG) 등 구체적인 데이터를 제공해요.",
                   bgColor: "bg-[#AD46FF]/10",
                   borderColor: "border-[#AD46FF]/20",
                   hoverLine: "group-hover:via-[#AD46FF]/50",

@@ -27,7 +27,11 @@ export async function signUpAction(data: SignupSchema) {
 
   // identities 배열이 비어있다면 이미 가입된 계정인 것
   if (authData?.user?.identities && authData.user.identities.length === 0) {
-    return { success: false, message: "이미 가입된 이메일입니다." };
+    return {
+      success: false,
+      message:
+        "이미 가입된 이메일이에요. 로그인 또는 소셜 로그인을 시도해주세요.",
+    };
   }
 
   return { success: true };
@@ -101,12 +105,11 @@ export async function signInAction(data: LoginSchema) {
     password: data.password,
   });
 
-  console.error(error);
-
   if (error) {
     return {
       success: false,
-      message: "이메일 또는 비밀번호가 일치하지 않습니다.",
+      message:
+        "이메일 또는 비밀번호가 일치하지 않습니다. 소셜 계정으로 가입하셨는지 확인해 주세요!",
     };
   }
 

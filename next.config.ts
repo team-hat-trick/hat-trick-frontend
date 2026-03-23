@@ -19,8 +19,21 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "emrxtzgtbgrrrzfrygdf.supabase.co",
-      }
+      },
+      {
+        protocol: "https",
+        hostname: "crests.football-data.org",
+      },
     ],
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: "/proxy-api/:path*",
+        destination: `https://api.football-data.org/:path*`,
+      },
+    ];
   },
 };
 

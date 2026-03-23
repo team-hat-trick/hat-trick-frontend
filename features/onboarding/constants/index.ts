@@ -1,0 +1,1 @@
+export const INITIAL_PLAYER_ID_LIST = [3374, 38101, 96, 80171];

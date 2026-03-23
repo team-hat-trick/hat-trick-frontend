@@ -79,7 +79,7 @@ export function ProfileSetupStep({
     });
 
     if (result.success) {
-      router.push("/");
+      router.push("/onboarding?step=2");
     } else {
       alert("저장 실패: " + result.message);
     }
@@ -91,12 +91,12 @@ export function ProfileSetupStep({
       <div className="absolute top-[-69px] left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] bg-[rgba(0,188,125,0.05)] rounded-full blur-[150px] pointer-events-none" />
 
       {/* Main Container */}
-      <div className="relative w-full max-w-[672px] px-6 py-12 flex flex-col gap-8 h-full min-h-[682px] justify-center z-10">
+      <div className="relative w-full max-w-[672px] px-4 sm:px-6 py-8 sm:py-12 flex flex-col gap-6 sm:gap-8 h-full min-h-[682px] justify-center z-10">
         {/* Header Section */}
         <div className="flex flex-col gap-4">
           <div className="flex justify-between items-end w-full">
             <div className="flex flex-col gap-1">
-              <h2 className="text-[30px] font-black italic text-white uppercase tracking-[-1.1px] leading-[36px] font-['Inter']">
+              <h2 className="text-[24px] sm:text-[30px] font-black italic text-white uppercase tracking-[-1.1px] leading-[36px]">
                 Set Profile
               </h2>
               <p className="text-[#90a1b9] text-[14px] font-bold tracking-[1.25px]">
@@ -105,10 +105,10 @@ export function ProfileSetupStep({
             </div>
 
             <div className="flex items-center">
-              <span className="text-[#00bc7d] text-[20px] font-black italic tracking-[-0.45px] font-['Inter']">
+              <span className="text-[#00bc7d] text-[20px] font-black italic tracking-[-0.45px]">
                 01{" "}
               </span>
-              <span className="text-[#45556c] text-[14px] font-black italic tracking-[-0.15px] font-['Inter'] ml-1">
+              <span className="text-[#45556c] text-[14px] font-black italic tracking-[-0.15px] ml-1">
                 / 03
               </span>
             </div>
@@ -129,7 +129,7 @@ export function ProfileSetupStep({
         />
 
         {/* Input Card */}
-        <div className="w-full bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-[32px] p-8 shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] flex flex-col items-center gap-8">
+        <div className="w-full bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-[32px] p-5 sm:p-8 shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] flex flex-col items-center gap-6 sm:gap-8">
           {/* Avatar Upload */}
           <div className="relative w-[128px] h-[128px]">
             <p className="absolute -top-6 left-1/2 -translate-x-1/2 text-[#62748e] text-[12px] font-bold tracking-[1.2px] uppercase whitespace-nowrap">
@@ -218,7 +218,10 @@ export function ProfileSetupStep({
             )}
           </button>
 
-          <button className="w-full py-2 text-[#62748e] text-[12px] font-bold tracking-[1.2px] uppercase hover:text-white transition-colors">
+          <button 
+            onClick={() => router.push("/onboarding?step=2")}
+            className="w-full py-2 text-[#62748e] text-[12px] font-bold tracking-[1.2px] uppercase hover:text-white transition-colors"
+          >
             건너뛰기
           </button>
         </div>

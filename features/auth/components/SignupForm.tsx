@@ -73,7 +73,7 @@ export function SignupForm() {
   };
 
   return (
-    <div className="backdrop-blur-[20px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-[40px] w-full max-w-[448px] p-[48px] relative z-10 shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)]">
+    <div className="backdrop-blur-[20px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-[40px] w-full max-w-[448px] p-6 sm:p-[48px] relative z-10 shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)]">
       <div className="mx-auto flex justify-center mb-6">
         <Image
           src={logo}
@@ -84,7 +84,7 @@ export function SignupForm() {
         />
       </div>
 
-      <h1 className="text-white text-center text-[29.6px] font-bold italic uppercase tracking-[-1.5px] leading-[36px] mb-2">
+      <h1 className="text-white text-center text-[24px] sm:text-[29.6px] font-bold italic uppercase tracking-[-1.5px] leading-[36px] mb-2">
         Join the Squad
       </h1>
       <p className="text-[#62748e] text-center text-[14px] font-bold tracking-[1.4px] uppercase mb-12">

@@ -3,7 +3,7 @@
 import { Competition } from "@/features/onboarding/types";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import { createBrowserSupabaseClient } from "@/lib/utils/supabase/client";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useGetStandings } from "../hooks/useGetStandings";
 import { BIG_5_CODES } from "../constants";
@@ -14,6 +14,7 @@ const Standing = () => {
   const [competitions, setCompetitions] = useState<Competition[]>([]);
   const [leagueType, setLeagueType] = useState<Competition | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   useClickOutside(dropdownRef, () => {
@@ -33,9 +34,9 @@ const Standing = () => {
 
   const selectedData = currentLeagueData?.data as ApiResopnse | undefined;
   // standings 배열에는 주로 'TOTAL', 'HOME', 'AWAY' 등의 타입이 있으며, 일반적으로 [0]이 'TOTAL'입니다.
-  const standingsTable = selectedData?.standings?.[0]?.table;
-
-  console.log(standingsTable)
+  const standingsTable = selectedData?.standings?.[0]?.table || [];
+  const displayLimit = 5;
+  const displayedStandings = isExpanded ? standingsTable : standingsTable.slice(0, displayLimit);
 
   useEffect(() => {
     const fetchCompetitions = async () => {
@@ -109,12 +110,12 @@ const Standing = () => {
         </div>
 
         {/* Table Body */}
-        <div className="flex flex-col max-h-[500px] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="flex flex-col">
           {standingsTable && standingsTable.length > 0 ? (
-            standingsTable.map((row) => (
+            displayedStandings.map((row) => (
               <div
                 key={row.team.id}
-                className="grid grid-cols-[20px_1fr_28px_32px_32px] md:grid-cols-[24px_1fr_32px_40px_36px] gap-2 md:gap-3 items-center text-xs md:text-sm text-white font-medium px-4 py-3 border-b border-white/5 last:border-0 hover:bg-white/10 transition-colors text-center"
+                className="grid grid-cols-[20px_1fr_28px_32px_32px] md:grid-cols-[24px_1fr_32px_40px_36px] gap-2 md:gap-3 items-center text-xs md:text-sm text-white font-medium px-4 py-3 border-b border-white/5 hover:bg-white/10 transition-colors text-center"
               >
                 <div className="text-left text-white/50 font-bold">{row.position}</div>
                 <div className="flex items-center gap-2.5 text-left min-w-0">
@@ -132,6 +133,24 @@ const Standing = () => {
             </div>
           )}
         </div>
+
+        {/* Toggle Expand / Collapse */}
+        {standingsTable && standingsTable.length > displayLimit && (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="w-full flex justify-center items-center gap-1.5 py-3 text-xs font-bold text-white/40 hover:text-white/80 hover:bg-white/5 transition-colors"
+          >
+            {isExpanded ? (
+              <>
+                접기 <ChevronUp className="w-3.5 h-3.5" />
+              </>
+            ) : (
+              <>
+                더보기 <ChevronDown className="w-3.5 h-3.5" />
+              </>
+            )}
+          </button>
+        )}
       </div>
     </div>
   );

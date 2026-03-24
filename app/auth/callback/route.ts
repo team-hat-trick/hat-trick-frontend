@@ -16,13 +16,13 @@ export async function GET(request: Request) {
     if (!error) {
       // 2. 인증 성공 시 원하는 페이지로 리다이렉트
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_FRONT_DOMAIN}${next}`,
+        `${origin}${next}`,
       );
     }
   }
 
   // 인증 실패 시 에러 페이지나 로그인 페이지로 리다이렉트
   return NextResponse.redirect(
-    `${process.env.NEXT_PUBLIC_FRONT_DOMAIN}/login?error=auth_code_error`,
+    `${origin}/login?error=auth_code_error`,
   );
 }

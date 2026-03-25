@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-react";
 import { Competition } from "@/features/onboarding/types";
 import { MatchData } from "../types/dashboard";
 import { MatchCard } from "./MatchCard";
+import Link from "next/link";
 
 interface LeagueSectionProps {
   league: Competition;
@@ -15,8 +16,11 @@ export function LeagueSection({ league, matches }: LeagueSectionProps) {
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* League Header */}
-      <div className="flex items-center gap-3 px-2 w-full">
-        <span className="text-2xl">{league.country}</span>
+      <Link
+        href={`/leagues/${league.id}`}
+        className="flex items-center gap-3 px-2 w-full"
+      >
+        <span className="text-2xl">{league.country_flag}</span>
         <h3 className="font-bold text-2xl text-white tracking-[-0.45px]">
           {league.name}
         </h3>
@@ -24,7 +28,7 @@ export function LeagueSection({ league, matches }: LeagueSectionProps) {
         <button className="w-4 h-4 text-[#62748e] hover:text-white transition-colors">
           <ChevronRight className="w-full h-full" />
         </button>
-      </div>
+      </Link>
 
       {/* Match List */}
       {

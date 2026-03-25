@@ -5,6 +5,7 @@ export interface Competition {
     code: string;
     created_at: string;
     country: string;
+    country_flag: string;
 };
 
 export interface Team {

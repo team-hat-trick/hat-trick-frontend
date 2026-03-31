@@ -1,25 +1,28 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import { DateSelector } from "./DateSelector";
 import { LeagueSection } from "./LeagueSection";
 import { RightSideBar } from "./RightSideBar";
 import { MOCK_LEAGUES, MOCK_MATCHES } from "../constants/mockData";
-import { ChevronDown, Filter } from "lucide-react";
+import { Calendar, ChevronDown, Filter } from "lucide-react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import { useGetMatches } from "../hooks/useGetMatches";
-import { createBrowserSupabaseClient } from "@/lib/utils/supabase/client";
-import { Competition } from "@/features/onboarding/types";
+import { useGetFixtures } from "../hooks/useGetMatches";
 import { Loader2 } from "lucide-react";
-import { BIG_5_CODES, LEAGUE_OPTIONS } from "../constants";
-import { useGetMatchesByLeague } from "../hooks/useGetMatchesByLeague";
-import { ApiResopnse, MatchData } from "../types/dashboard";
+import { LEAGUE_OPTIONS, LIVE_STATUS_CODE } from "../constants";
+import type { FixtureList, League } from "../types/dashboard";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
+import CalendarModal from "./modal/CalendarModal";
 
 dayjs.locale("ko");
+
+type LeagueType = {
+  name: string;
+  id: number | null;
+};
 
 export function DashboardLayout() {
   // Group matches by league
@@ -35,9 +38,13 @@ export function DashboardLayout() {
   const [selectedDate, setSelectedDate] = useState<string>(
     dayjs().format("YYYY-MM-DD"),
   );
-  const [competitions, setCompetitions] = useState<Competition[]>([]);
-  const [isCompLoading, setIsCompLoading] = useState(true);
-  const [leagueType, setLeagueType] = useState<string>("전체");
+  const [leagueType, setLeagueType] = useState<LeagueType>({
+    name: "전체",
+    id: null,
+  });
+  const [isLiveOnly, setIsLiveOnly] = useState(false);
+
+  const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -45,48 +52,45 @@ export function DashboardLayout() {
     if (dropdownRef) setIsDropdownOpen(false);
   });
 
-  const startDate = dayjs(selectedDate).subtract(1, "day").format("YYYY-MM-DD");
-  const endDate = selectedDate;
+  const isToday = selectedDate === dayjs().format("YYYY-MM-DD");
+  const { data, isLoading: isApiLoading } = useGetFixtures(
+    selectedDate,
+    "Asia/Seoul",
+    isToday,
+  );
 
-  const results = useGetMatchesByLeague(BIG_5_CODES, startDate, endDate);
+  const allMatches = data?.response || [];
 
-  const isApiLoading = results.some((result) => result.isLoading);
+  const filteredMatches = useMemo(() => {
+    if (!isLiveOnly) return allMatches;
 
-  const allMatches = results.reduce((acc, result) => {
-    // 💡 result.data를 ApiResopnse<MatchData>로 간주하라고 명시합니다.
-    const data = result.data as ApiResopnse;
+    return allMatches.filter((item) =>
+      LIVE_STATUS_CODE.includes(item.fixture.status.short),
+    );
+  }, [allMatches, isLiveOnly]);
 
-    if (data?.matches) {
-      return [...acc, ...data.matches];
-    }
-    return acc;
-  }, [] as MatchData[]);
+  // Group directly from allMatches
+  const groupedLeagues = Object.values(
+    filteredMatches.reduce(
+      (acc, match) => {
+        const leagueId = match.league.id;
+        if (!acc[leagueId]) {
+          acc[leagueId] = {
+            league: match.league,
+            matches: [],
+          };
+        }
+        acc[leagueId].matches.push(match);
+        return acc;
+      },
+      {} as Record<number, { league: League; matches: FixtureList[] }>,
+    ),
+  ).filter((group) => {
+    if (leagueType.id === null) return true;
+    return group.league.id === leagueType.id;
+  });
 
-  const filteredCompetitions = BIG_5_CODES.map((code) =>
-    competitions.find((comp) => comp.code === code),
-  )
-    .filter((comp): comp is Competition => !!comp)
-    .filter((league) => {
-      if (leagueType === "전체") return true;
-      const selectedOption = LEAGUE_OPTIONS.find(
-        (opt) => opt.name === leagueType,
-      );
-      return league.code === selectedOption?.code;
-    });
-
-  useEffect(() => {
-    const fetchCompetitions = async () => {
-      setIsCompLoading(true);
-      const supabase = createBrowserSupabaseClient();
-      const { data } = await supabase.from("competitions").select("*");
-
-      setCompetitions(data as Competition[]);
-      setIsCompLoading(false);
-    };
-    fetchCompetitions();
-  }, []);
-
-  const isGlobalLoading = isApiLoading || isCompLoading;
+  const isGlobalLoading = isApiLoading;
 
   return (
     <div className="bg-white min-h-screen font-sans text-black flex">
@@ -118,6 +122,31 @@ export function DashboardLayout() {
                     className="flex gap-2 items-center relative"
                     ref={dropdownRef}
                   >
+                    {isToday && (
+                      <button
+                        onClick={() => setIsLiveOnly(!isLiveOnly)}
+                        className={`flex items-center gap-2 px-4 py-2 border rounded-xl text-sm font-bold transition-all ${
+                          isLiveOnly
+                            ? "bg-[#ff4646]/10 border-[#ff4646] text-[#ff4646]"
+                            : "bg-white/5 border-white/10 text-[#62748e] hover:bg-white/10"
+                        }`}
+                      >
+                        {isLiveOnly ? (
+                          <>
+                            <span className="relative flex h-2.5 w-2.5">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff4646] opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#ff4646]"></span>
+                            </span>
+                            LIVE ON
+                          </>
+                        ) : (
+                          <>
+                            <div className="w-2.5 h-2.5 rounded-full bg-[#62748e]"></div>
+                            LIVE
+                          </>
+                        )}
+                      </button>
+                    )}
                     {/* Filter Button */}
                     <button
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -125,7 +154,7 @@ export function DashboardLayout() {
                     >
                       <div className="flex items-center gap-2">
                         <Filter className="w-4 h-4 text-[#00bc7d]" />
-                        {leagueType}
+                        {leagueType.name}
                       </div>
                       <ChevronDown
                         className={`w-4 h-4 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
@@ -137,13 +166,13 @@ export function DashboardLayout() {
                       <div className="absolute top-full mt-2 right-0 w-[160px] bg-[#1a1a1a] border border-white/10 rounded-xl overflow-hidden z-50 shadow-2xl">
                         {LEAGUE_OPTIONS.map((option) => (
                           <button
-                            key={option.code}
+                            key={option.id ?? "all"}
                             onClick={() => {
-                              setLeagueType(option.name);
+                              setLeagueType(option);
                               setIsDropdownOpen(false);
                             }}
                             className={`w-full px-4 py-3 text-left text-sm font-medium transition-colors hover:bg-white/5 ${
-                              leagueType === option.name
+                              leagueType.id === option.id
                                 ? "text-[#00bc7d] bg-[#00bc7d]/5"
                                 : "text-[#cad5e2]"
                             }`}
@@ -154,8 +183,14 @@ export function DashboardLayout() {
                       </div>
                     )}
 
-                    <button className="px-4 py-2 bg-[#00bc7d] text-black font-bold text-sm rounded-xl hover:bg-[#00d492] transition-colors">
-                      전체 일정 보기
+                    <button
+                      className="px-4 py-2 bg-[#00bc7d] text-black font-bold text-sm rounded-xl hover:bg-[#00d492] transition-colors"
+                      onClick={() => setIsCalendarModalOpen(true)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4" />
+                        {isToday ? "전체 일정" : selectedDate}
+                      </div>
                     </button>
                   </div>
                 </div>
@@ -178,33 +213,16 @@ export function DashboardLayout() {
                     </div>
                   ) : (
                     <>
-                      {filteredCompetitions.map((league) => {
-                        const matchesForThisLeague = allMatches.filter(
-                          (match) => {
-                            const isSameLeague =
-                              match.competition.id === league.id;
-                            const isSameDate =
-                              dayjs(match.utcDate).format("YYYY-MM-DD") ===
-                              selectedDate;
-                            return isSameLeague && isSameDate;
-                          },
-                        );
-
-                        // 경기가 있는 리그만 보여주고 싶다면 아래 조건 추가
-                        if (matchesForThisLeague.length === 0) return null;
-                        console.log(matchesForThisLeague);
-
-                        return (
-                          <LeagueSection
-                            key={league.id}
-                            league={league}
-                            matches={matchesForThisLeague}
-                          />
-                        );
-                      })}
+                      {groupedLeagues.map((group) => (
+                        <LeagueSection
+                          key={group.league.id}
+                          league={group.league}
+                          matches={group.matches}
+                        />
+                      ))}
 
                       {/* 3. 데이터가 아예 없는 경우 (Empty State) */}
-                      {!isGlobalLoading && allMatches.length === 0 && (
+                      {!isGlobalLoading && groupedLeagues.length === 0 && (
                         <div className="flex flex-col items-center justify-center py-20 border border-white/5 rounded-3xl bg-white/[0.02]">
                           <p className="text-[#62748e] font-bold">
                             선택하신 날짜에 예정된 경기가 없습니다.
@@ -224,6 +242,18 @@ export function DashboardLayout() {
           </main>
         </div>
       </div>
+
+      {isCalendarModalOpen && (
+        <CalendarModal
+          selectedDate={selectedDate}
+          onSelectDate={(date) => {
+            setSelectedDate(date); // 날짜 변경!
+            setIsCalendarModalOpen(false); // 모달 닫기
+            setIsLiveOnly(false); // 라이브 필터가 켜져있었다면 꺼주는 센스
+          }}
+          onClose={() => setIsCalendarModalOpen(false)}
+        />
+      )}
     </div>
   );
 }

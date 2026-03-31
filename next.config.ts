@@ -22,7 +22,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "crests.football-data.org",
+        hostname: "media.api-sports.io",
       },
     ],
   },
@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/proxy-api/:path*",
-        destination: `https://api.football-data.org/:path*`,
+        destination: `https://v3.football.api-sports.io/:path*`,
       },
     ];
   },

@@ -43,7 +43,7 @@ export function Sidebar() {
             className="flex items-center gap-3 px-3 py-2.5 rounded-[14px] text-[#90a1b9] font-medium text-sm hover:bg-white/5 transition-colors"
           >
             <BarChart2 className="w-5 h-5" />
-            <span>데이터 분석</span>
+            <span>데이터 분석(개발중)</span>
           </Link>
 
           <Link
@@ -51,7 +51,7 @@ export function Sidebar() {
             className="flex items-center gap-3 px-3 py-2.5 rounded-[14px] text-[#90a1b9] font-medium text-sm hover:bg-white/5 transition-colors"
           >
             <Users className="w-5 h-5" />
-            <span>커뮤니티</span>
+            <span>커뮤니티(개발중)</span>
           </Link>
 
           <Link
@@ -59,7 +59,7 @@ export function Sidebar() {
             className="flex items-center gap-3 px-3 py-2.5 rounded-[14px] text-[#90a1b9] font-medium text-sm hover:bg-white/5 transition-colors"
           >
             <Trophy className="w-5 h-5" />
-            <span>리그 순위</span>
+            <span>리그 순위(개발중)</span>
           </Link>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { ChevronDown, Star, Activity } from "lucide-react";
 import { useGetRecord } from "../hooks/useGetRecord";
-import { ApiResopnse, MatchData } from "../types/dashboard";
+import { ApiResponse, FixtureList } from "../types/dashboard";
 import { useEffect, useRef, useState } from "react";
 import { createBrowserSupabaseClient } from "@/lib/utils/supabase/client";
 import { Team } from "@/features/onboarding/types";
@@ -22,13 +22,13 @@ const FollowedTeamRecord = ({ teamIds }: Props) => {
 
   const results = useGetRecord(teamIds);
   const recordData = results.reduce((acc, result) => {
-    const data = result.data as ApiResopnse;
+    const data = result.data as ApiResponse<FixtureList[]>;
 
-    if (data?.matches) {
-      return [...acc, ...data.matches];
+    if (data?.response) {
+      return [...acc, ...data.response];
     }
     return acc;
-  }, [] as MatchData[]);
+  }, [] as FixtureList[]);
 
   useEffect(() => {
     const fetchFollowedTeams = async () => {
@@ -58,18 +58,20 @@ const FollowedTeamRecord = ({ teamIds }: Props) => {
     fetchFollowedTeams();
   }, [teamIds]);
 
+  console.log(teams);
+
   const filteredRecord = recordData
     .filter(
       (item) =>
-        item.homeTeam.id === selectedTeam?.id ||
-        item.awayTeam.id === selectedTeam?.id
+        item.teams.home.id === selectedTeam?.id ||
+        item.teams.away.id === selectedTeam?.id
     )
-    .sort((a, b) => new Date(b.utcDate).getTime() - new Date(a.utcDate).getTime());
+    .sort((a, b) => new Date(b.fixture.date).getTime() - new Date(a.fixture.date).getTime());
 
-  const getMatchResult = (match: MatchData, teamId: number) => {
-    const isHome = match.homeTeam.id === teamId;
-    const homeScore = match.score.fullTime.home ?? 0;
-    const awayScore = match.score.fullTime.away ?? 0;
+  const getMatchResult = (match: FixtureList, teamId: number) => {
+    const isHome = match.teams.home.id === teamId;
+    const homeScore = match.score.fulltime.home ?? 0;
+    const awayScore = match.score.fulltime.away ?? 0;
     
     if (homeScore === awayScore) {
       return { type: "D", bg: "bg-[#45556c]", text: "text-white" };
@@ -100,7 +102,7 @@ const FollowedTeamRecord = ({ teamIds }: Props) => {
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             <div className="flex items-center gap-1.5">
-              {selectedTeam?.short_name || "팀 선택"}
+              {selectedTeam?.name || "팀 선택"}
             </div>
             <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`} />
           </button>
@@ -118,7 +120,7 @@ const FollowedTeamRecord = ({ teamIds }: Props) => {
                     selectedTeam?.id === team.id ? "text-[#00bc7d] bg-[#00bc7d]/5" : "text-[#cad5e2]"
                   }`}
                 >
-                  {team.short_name}
+                  {team.name}
                 </button>
               ))}
             </div>
@@ -142,9 +144,9 @@ const FollowedTeamRecord = ({ teamIds }: Props) => {
                   const res = getMatchResult(match, selectedTeam.id);
                   return (
                     <div
-                      key={`${match.id}-${idx}`}
+                      key={`${match.fixture.id}-${idx}`}
                       className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black ${res.bg} ${res.text} shadow-sm`}
-                      title={`${match.homeTeam.name} vs ${match.awayTeam.name}`}
+                      title={`${match.teams.home.name} vs ${match.teams.away.name}`}
                     >
                       {res.type}
                     </div>
@@ -156,22 +158,22 @@ const FollowedTeamRecord = ({ teamIds }: Props) => {
             {/* Match List */}
             <div className="flex flex-col gap-2">
               {filteredRecord.slice(0, 5).map((match) => {
-                const isHomeSelected = match.homeTeam.id === selectedTeam.id;
-                const homeScore = match.score.fullTime.home ?? 0;
-                const awayScore = match.score.fullTime.away ?? 0;
+                const isHomeSelected = match.teams.home.id === selectedTeam.id;
+                const homeScore = match.score.fulltime.home ?? 0;
+                const awayScore = match.score.fulltime.away ?? 0;
                 const res = getMatchResult(match, selectedTeam.id);
 
                 return (
-                  <div key={match.id} className="group relative flex items-center justify-between p-2.5 rounded-[14px] bg-gradient-to-r from-[rgba(255,255,255,0.02)] to-transparent border border-white/5 hover:border-white/10 transition-all mb-1 overflow-hidden">
+                  <div key={match.fixture.id} className="group relative flex items-center justify-between p-2.5 rounded-[14px] bg-gradient-to-r from-[rgba(255,255,255,0.02)] to-transparent border border-white/5 hover:border-white/10 transition-all mb-1 overflow-hidden">
                     {/* Left border indicator based on result */}
                     <div className={`absolute left-0 top-0 bottom-0 w-1 ${res.bg} opacity-50 group-hover:opacity-100 transition-opacity`} />
                     
                     {/* Home Team */}
                     <div className="flex items-center gap-2 flex-1 justify-end min-w-0 pr-2">
                       <span className={`text-xs font-bold truncate max-w-[70px] ${isHomeSelected ? "text-white" : "text-[#62748e]"}`}>
-                        {match.homeTeam.shortName || match.homeTeam.name}
+                        {match.teams.home.name}
                       </span>
-                      <img src={match.homeTeam.crest} alt="" className="w-5 h-5 object-contain shrink-0 drop-shadow-md" />
+                      <img src={match.teams.home.logo} alt="" className="w-5 h-5 object-contain shrink-0 drop-shadow-md" />
                     </div>
 
                     {/* Score */}
@@ -183,9 +185,9 @@ const FollowedTeamRecord = ({ teamIds }: Props) => {
 
                     {/* Away Team */}
                     <div className="flex items-center gap-2 flex-1 justify-start min-w-0 pl-2">
-                      <img src={match.awayTeam.crest} alt="" className="w-5 h-5 object-contain shrink-0 drop-shadow-md" />
+                      <img src={match.teams.away.logo} alt="" className="w-5 h-5 object-contain shrink-0 drop-shadow-md" />
                       <span className={`text-xs font-bold truncate max-w-[70px] ${!isHomeSelected ? "text-white" : "text-[#62748e]"}`}>
-                        {match.awayTeam.shortName || match.awayTeam.name}
+                        {match.teams.away.name}
                       </span>
                     </div>
                   </div>

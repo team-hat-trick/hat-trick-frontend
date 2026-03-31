@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { MOCK_DATES } from "../constants/mockData";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
@@ -13,11 +13,21 @@ interface Props {
 }
 
 export function DateSelector({ selectedDate, setSelectedDate }: Props) {
+  const [anchorDate, setAnchorDate] = useState(dayjs());
+
+  useEffect(() => {
+    const diff = dayjs(selectedDate).diff(anchorDate, "day");
+
+    if (diff < -7 || diff > 7) {
+      setAnchorDate(dayjs(selectedDate));
+    }
+  }, [selectedDate, anchorDate])
+
   const dateRange = useMemo(() => {
     const dates = [];
 
     for (let i = -7; i <= 7; i++) {
-      const date = dayjs().add(i, "day");
+      const date = anchorDate.add(i, "day");
       dates.push({
         fullDate: date.format("YYYY-MM-DD"),
         dayName: date.format("ddd"),
@@ -26,7 +36,7 @@ export function DateSelector({ selectedDate, setSelectedDate }: Props) {
       });
     }
     return dates;
-  }, []);
+  }, [anchorDate]);
 
   return (
     <div className="w-full bg-[#0a0a0a] border border-white/5 rounded-2xl p-2.5 flex items-center gap-1 overflow-x-auto custom-scrollbar">

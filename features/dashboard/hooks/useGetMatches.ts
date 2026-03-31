@@ -1,15 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import type { ApiResopnse, MatchData } from "../types/dashboard";
+import type { ApiResponse, FixtureList } from "../types/dashboard";
 import { dashboardService } from "../services/dashboardService";
 
-export const useGetMatches = (
-  startDate: string,
-  endDate: string,
-  codes: string,
-) => {
-  return useQuery<ApiResopnse>({
-    queryKey: ["matches", startDate, endDate, codes],
-    queryFn: () =>
-      dashboardService.getMatches(startDate, endDate, codes),
+export const useGetFixtures = (date: string, timezone: string, isToday: boolean) => {
+  return useQuery<ApiResponse<FixtureList[]>>({
+    queryKey: ["matches", date, timezone],
+    queryFn: () => dashboardService.getFixtures(date, timezone),
+    refetchInterval: isToday ? 60000 : false,
   });
 };

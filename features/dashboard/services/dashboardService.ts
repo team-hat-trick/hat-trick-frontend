@@ -1,41 +1,20 @@
 import { apiClient } from "@/lib/api";
-import type { ApiResopnse, MatchData } from "../types/dashboard";
+import type { ApiResponse, FixtureList, StandingsData } from "../types/dashboard";
 import { DASHBOARD_API_ENDPOINTS } from "./api-config";
 
 export const dashboardService = {
-  getMatches: async (
-    startDate: string,
-    endDate: string,
-    codes: string,
-  ): Promise<ApiResopnse> => {
+  getFixtures: async (
+    date: string,
+    timezone: string,
+  ): Promise<ApiResponse<FixtureList[]>> => {
     const response = await apiClient.get(
-      `${DASHBOARD_API_ENDPOINTS.matches.list}?dateFrom=${startDate}&dateTo=${endDate}&competitions=${codes}`,
+      `${DASHBOARD_API_ENDPOINTS.matches.list(date, timezone)}`,
     );
 
     return response.data;
   },
 
-  getMatchesByLeague: async (
-    code: string,
-    startDate: string,
-    endDate: string,
-  ): Promise<ApiResopnse> => {
-    const response = await apiClient.get(
-      `${DASHBOARD_API_ENDPOINTS.matches.byLeague(code)}?dateFrom=${startDate}&dateTo=${endDate}`,
-    );
-
-    return response.data;
-  },
-
-  getMatchDetail: async (id: number): Promise<MatchData> => {
-    const response = await apiClient.get(
-      `${DASHBOARD_API_ENDPOINTS.matches.detail(id)}`,
-    );
-
-    return response.data;
-  },
-
-  getRecord: async (teamId: number): Promise<ApiResopnse> => {
+  getRecord: async (teamId: number): Promise<ApiResponse<FixtureList[]>> => {
     const response = await apiClient.get(
       `${DASHBOARD_API_ENDPOINTS.sideBar.record(teamId)}`,
     );
@@ -43,17 +22,9 @@ export const dashboardService = {
     return response.data;
   },
 
-  getNextMatch: async (teamId: number): Promise<ApiResopnse> => {
+  getStandings: async (leagueId: number, season: number): Promise<ApiResponse<StandingsData[]>> => {
     const response = await apiClient.get(
-      `${DASHBOARD_API_ENDPOINTS.sideBar.nextMatch(teamId)}`,
-    );
-
-    return response.data;
-  },
-
-  getStandings: async (leagueCode: string): Promise<ApiResopnse> => {
-    const response = await apiClient.get(
-      DASHBOARD_API_ENDPOINTS.sideBar.standings(leagueCode),
+      DASHBOARD_API_ENDPOINTS.sideBar.standings(leagueId, season),
     );
 
     return response.data;

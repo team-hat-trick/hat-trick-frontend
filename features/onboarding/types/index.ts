@@ -1,26 +1,21 @@
 export interface Competition {
     id: number;
     name: string;
-    emblem_url: string;
-    code: string;
-    created_at: string;
+    logo: string;
     country: string;
-    country_flag: string;
+    is_core: boolean;
+    code?: string;
+    country_flag?: string;
 };
 
 export interface Team {
     id: number;
     name: string;
-    short_name: string;
-    tla: string;
-    logo_url: string;
-    address: string;
-    website: string;
-    club_colors: string;
-    founded: number;
-    venue: string;
-    league_id: number;
-    last_updated: string;
+    code: string;
+    logo: string;
+    league_id: number | null;
+    venue_name: string;
+    short_name?: string;
 };
 
 export interface FollowedTeam {
@@ -32,11 +27,13 @@ export interface FollowedTeam {
 export interface Player {
     id: number;
     name: string;
-    position: string;
-    date_of_birth: string;
-    nationality: string;
+    age: number;
+    number: number;
+    photo: string | null;
     team_id: number;
-    created_at: string;
+    position?: string;
+    team_name?: string;
+    team_logo?: string;
 }
 
 export interface FollowedPlayer {

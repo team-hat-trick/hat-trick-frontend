@@ -1,28 +1,36 @@
-export const BIG_5_CODES = ["PL", "BL1", "FL1", "PD", "SA"];
+export const POPULAR_LEAGUE_IDS = [39, 140, 78, 135, 61, 292];
+
+export const CURRENT_SEASON = 2025;
 
 export const LEAGUE_OPTIONS = [
   {
     name: "전체",
-    code: "ALL",
+    id: null,
   },
   {
     name: "Premier League",
-    code: "PL",
+    id: 39,
   },
   {
     name: "LaLiga",
-    code: "PD",
+    id: 140,
   },
   {
     name: "Bundesliga",
-    code: "BL1",
+    id: 78,
   },
   {
     name: "Serie A",
-    code: "SA",
+    id: 135,
   },
   {
     name: "Ligue 1",
-    code: "FL1",
+    id: 61,
   },
+  {
+    name: "K League 1",
+    id: 292,
+  }
 ];
+
+export const LIVE_STATUS_CODE = ["1H", "2H", "HT", "ET", "BT", "P", "SUSP", "INT"];

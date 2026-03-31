@@ -1,13 +1,13 @@
 import React from "react";
 import { ChevronRight } from "lucide-react";
-import { Competition } from "@/features/onboarding/types";
-import { MatchData } from "../types/dashboard";
+import { FixtureList, League } from "../types/dashboard";
 import { MatchCard } from "./MatchCard";
 import Link from "next/link";
+import Image from "next/image";
 
 interface LeagueSectionProps {
-  league: Competition;
-  matches: MatchData[];
+  league: League;
+  matches: FixtureList[];
 }
 
 export function LeagueSection({ league, matches }: LeagueSectionProps) {
@@ -20,9 +20,18 @@ export function LeagueSection({ league, matches }: LeagueSectionProps) {
         href={`/leagues/${league.id}`}
         className="flex items-center gap-3 px-2 w-full"
       >
-        <span className="text-2xl">{league.country_flag}</span>
+        <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0 border border-white/10">
+          <Image
+            src={league.logo}
+            alt={league.name}
+            width={24}
+            height={24}
+            className="w-[70%] h-[70%] object-contain"
+          />
+        </div>
         <h3 className="font-bold text-2xl text-white tracking-[-0.45px]">
           {league.name}
+          {league.flag && ` - ${league.country}`}
         </h3>
         <div className="flex-1 h-px bg-white/5 ml-2" />
         <button className="w-4 h-4 text-[#62748e] hover:text-white transition-colors">
@@ -34,7 +43,7 @@ export function LeagueSection({ league, matches }: LeagueSectionProps) {
       {
         <div className="flex flex-col gap-4">
           {matches.map((match) => (
-            <MatchCard key={match.id} match={match} />
+            <MatchCard key={match.fixture.id} match={match} />
           ))}
         </div>
       }

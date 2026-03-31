@@ -1,5 +1,15 @@
-import { ProfileSetupStep, TeamFollowStep, PlayerFollowStep } from "@/features/onboarding";
-import { Competition, FollowedTeam, Team, Player, FollowedPlayer } from "@/features/onboarding/types";
+import {
+  ProfileSetupStep,
+  TeamFollowStep,
+  PlayerFollowStep,
+} from "@/features/onboarding";
+import {
+  Competition,
+  FollowedTeam,
+  Team,
+  Player,
+  FollowedPlayer,
+} from "@/features/onboarding/types";
 import { createClient } from "@/lib/utils/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -37,18 +47,39 @@ export default async function OnboardingPage({
     .from("teams")
     .select("*");
   const { data: followedTeams, error: followedTeamsError } = await supabase
-    .from("user_team_follows")
+    .from("user_follows_teams")
     .select("*")
     .eq("user_id", user.id);
-  const { data: players, error: playersError } = await supabase
-    .from("players")
-    .select("*");
   const { data: followedPlayers, error: followedPlayersError } = await supabase
-    .from("user_player_follows")
+    .from("user_follows_players")
     .select("*")
     .eq("user_id", user.id);
 
-  console.log(followedTeams);
+  async function getAllPlayers(supabase: any) {
+    let allPlayers: any[] = [];
+    let from = 0;
+    const step = 1000; // 한 번에 가져올 양
+
+    while (true) {
+      const { data, error } = await supabase
+        .from("players")
+        .select("*")
+        .range(from, from + step - 1); // 0-999, 1000-1999 ...
+
+      if (error) throw error;
+      if (!data || data.length === 0) break;
+
+      allPlayers = [...allPlayers, ...data];
+      from += step;
+
+      // 안전장치: 너무 많으면 끊기 (예: 1만 명)
+      if (from >= 10000) break;
+    }
+
+    return allPlayers;
+  }
+
+  const players = await getAllPlayers(supabase);
 
   // Fallback to auth metadata if profile data is missing/empty
   const name = userProfile?.name || user.user_metadata?.full_name || "";

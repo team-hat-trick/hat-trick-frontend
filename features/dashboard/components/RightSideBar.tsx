@@ -16,12 +16,12 @@ export function RightSideBar() {
     if (!profile) return;
 
     const fetchFollowedTeamIds = async () => {
-      const { data } = await supabase
-        .from("user_team_follows")
+      const { data: followsData, error: followsError } = await supabase
+        .from("user_follows_teams")
         .select("team_id")
         .eq("user_id", profile?.user_id);
-      if (data) {
-        setFollowedTeamIds(data.map((item) => item.team_id));
+      if (followsData) {
+        setFollowedTeamIds(followsData.map((item) => item.team_id));
       }
     };
     fetchFollowedTeamIds();

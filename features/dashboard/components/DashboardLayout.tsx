@@ -10,7 +10,7 @@ import { MOCK_LEAGUES, MOCK_MATCHES } from "../constants/mockData";
 import { Calendar, ChevronDown, Filter } from "lucide-react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import { useGetFixtures } from "../hooks/useGetMatches";
+import { useGetFixtures } from "../hooks/useGetFixtures";
 import { Loader2 } from "lucide-react";
 import { LEAGUE_OPTIONS, LIVE_STATUS_CODE } from "../constants";
 import type { FixtureList, League } from "../types/dashboard";

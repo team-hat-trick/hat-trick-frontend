@@ -17,7 +17,7 @@ export function LeagueSection({ league, matches }: LeagueSectionProps) {
     <div className="flex flex-col gap-6 w-full">
       {/* League Header */}
       <Link
-        href={`/leagues/${league.id}`}
+        href={`/leagues/${league.id}/overview`}
         className="flex items-center gap-3 px-2 w-full"
       >
         <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0 border border-white/10">

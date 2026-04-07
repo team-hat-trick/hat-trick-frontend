@@ -42,7 +42,7 @@ export function Header() {
 
   return (
     <>
-      <header className="h-20 bg-[rgba(5,5,5,0.8)] backdrop-blur-md border-b border-white/5 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-10 shrink-0 gap-4">
+      <header className="h-20 bg-[rgba(5,5,5,0.8)] backdrop-blur-md border-b border-white/5 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-999 shrink-0 gap-4">
       {/* Mobile Menu Icon */}
       <div className="flex lg:hidden items-center">
         <button 

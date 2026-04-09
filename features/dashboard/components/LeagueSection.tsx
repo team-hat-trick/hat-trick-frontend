@@ -20,7 +20,7 @@ export function LeagueSection({ league, matches }: LeagueSectionProps) {
         href={`/leagues/${league.id}/overview`}
         className="flex items-center gap-3 px-2 w-full"
       >
-        <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0 border border-white/10">
+        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0 border border-white/10">
           <Image
             src={league.logo}
             alt={league.name}
@@ -29,7 +29,7 @@ export function LeagueSection({ league, matches }: LeagueSectionProps) {
             className="w-[70%] h-[70%] object-contain"
           />
         </div>
-        <h3 className="font-bold text-2xl text-white tracking-[-0.45px]">
+        <h3 className="font-bold text-lg sm:text-2xl text-white tracking-[-0.45px]">
           {league.name}
           {league.flag && ` - ${league.country}`}
         </h3>

@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/sync/cron/top-rated",
+      "schedule": "0 21 * * 1"
+    }
+  ]
+}

@@ -66,7 +66,7 @@ export function LeagueDetailClient({ leagueId }: Props) {
 
         <main className="flex-1 overflow-x-hidden">
           {/* HEADER SECTION */}
-          <div className="relative w-full h-48 md:h-64 flex items-end p-6 md:p-10 border-b border-white/10 bg-gradient-to-t from-[#0a0a0a] to-[rgba(0,188,125,0.15)] overflow-hidden">
+          <div className="relative w-full h-44 sm:h-48 md:h-64 flex items-end p-4 sm:p-6 md:p-10 border-b border-white/10 bg-gradient-to-t from-[#0a0a0a] to-[rgba(0,188,125,0.15)] overflow-hidden">
             {/* Background Blur */}
             <div className="absolute inset-0 opacity-20 pointer-events-none">
               <Image
@@ -78,8 +78,8 @@ export function LeagueDetailClient({ leagueId }: Props) {
               />
             </div>
 
-            <div className="flex items-center gap-6 z-10 w-full max-w-[1400px] mx-auto">
-              <div className="w-20 h-20 md:w-28 md:h-28 bg-white backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/10 p-2 shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
+            <div className="flex items-center gap-4 sm:gap-6 z-10 w-full max-w-[1400px] mx-auto">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 bg-white backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/10 p-2 shadow-[0_8px_30px_rgb(0,0,0,0.5)] shrink-0">
                 <Image
                   src={leagueDetail.response[0].league.logo}
                   alt={leagueDetail.response[0].league.name}
@@ -94,7 +94,7 @@ export function LeagueDetailClient({ leagueId }: Props) {
                     {leagueDetail.response[0].country.name}
                   </span>
                 </div>
-                <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">
+                <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight">
                   {leagueDetail.response[0].league.name}
                 </h1>
                 <div className="flex items-center gap-3 mt-1">

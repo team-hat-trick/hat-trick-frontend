@@ -57,12 +57,12 @@ export default async function Home() {
                     height={30}
                     className="rounded-full"
                   />
-                  <p className="text-white/80 font-bold">{`${profile.name}님 반가워요!`}</p>
+                  <p className="text-white/80 font-bold hidden sm:block">{`${profile.name}님 반가워요!`}</p>
                 </Link>
                 <form action={signOutAction}>
                   <button
                     type="submit"
-                    className="px-4 py-2 border border-white/20 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all font-semibold"
+                    className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm border border-white/20 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all font-semibold whitespace-nowrap"
                   >
                     로그아웃
                   </button>
@@ -78,7 +78,7 @@ export default async function Home() {
                 </Link>
                 <Link
                   href="/signup"
-                  className="bg-white text-black px-4 py-2 rounded-full hover:bg-neutral-200 transition-colors"
+                  className="bg-white text-black px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm whitespace-nowrap rounded-full hover:bg-neutral-200 transition-colors"
                 >
                   시작하기
                 </Link>

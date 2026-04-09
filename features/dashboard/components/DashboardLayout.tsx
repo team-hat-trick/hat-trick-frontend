@@ -39,7 +39,7 @@ export function DashboardLayout() {
     dayjs().format("YYYY-MM-DD"),
   );
   const [leagueType, setLeagueType] = useState<LeagueType>({
-    name: "전체",
+    name: "인기 리그",
     id: null,
   });
   const [isLiveOnly, setIsLiveOnly] = useState(false);
@@ -102,14 +102,14 @@ export function DashboardLayout() {
 
           {/* Main content area */}
           <main className="flex-1 overflow-y-auto custom-scrollbar">
-            <div className="w-full max-w-[1500px] mx-auto px-4 lg:px-8 xl:px-12 py-[32px] flex flex-col xl:flex-row gap-6 xl:gap-[32px]">
+            <div className="w-full max-w-[1500px] mx-auto px-2 sm:px-4 lg:px-8 xl:px-12 py-4 sm:py-[32px] flex flex-col xl:flex-row gap-6 xl:gap-[32px]">
               {/* Center Feed */}
               <div className="flex flex-col gap-8 flex-1 min-w-0 xl:max-w-[1050px]">
                 {/* Title Section */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
-                      <h2 className="font-black text-[30px] text-white">
+                      <h2 className="font-black text-2xl sm:text-[30px] text-white tracking-tight">
                         경기 대시보드
                       </h2>
                     </div>
@@ -119,7 +119,7 @@ export function DashboardLayout() {
                   </div>
 
                   <div
-                    className="flex gap-2 items-center relative"
+                    className="flex flex-wrap gap-2 items-center relative"
                     ref={dropdownRef}
                   >
                     {isToday && (

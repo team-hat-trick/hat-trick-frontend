@@ -211,7 +211,7 @@ export function TeamFollowStep({
           </div>
         </div>
 
-        <div className="w-full bg-white/[0.05] border border-white/10 rounded-[32px] p-5 sm:p-8 flex flex-col gap-6">
+        <div className="w-full bg-white/[0.05] border border-white/10 rounded-[32px] p-4 sm:p-8 flex flex-col gap-6">
           {/* Search Bar */}
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#62748e]" />
@@ -260,7 +260,7 @@ export function TeamFollowStep({
           )}
 
           {/* 🏟️ Teams Grid: 팔로우 버튼 다시 추가됨 */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-h-[350px] sm:max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
             {displayedTeams.map((team) => {
               const isSelected = selectedTeams.has(team.id);
               return (

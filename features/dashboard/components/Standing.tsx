@@ -145,7 +145,7 @@ const Standing = () => {
 
       <div className="w-full bg-white/5 border border-white/10 rounded-2xl flex flex-col overflow-hidden">
         {/* Table Header */}
-        <div className="grid grid-cols-[20px_1fr_28px_32px_32px] md:grid-cols-[24px_1fr_32px_40px_36px] gap-2 md:gap-3 text-[10px] md:text-xs text-[#cad5e2] font-semibold px-4 py-3 border-b border-white/10 text-center bg-black/20">
+        <div className="grid grid-cols-[20px_1fr_28px_32px_32px] md:grid-cols-[24px_1fr_32px_40px_36px] gap-2 md:gap-3 text-[10px] md:text-xs text-[#cad5e2] font-semibold px-2 sm:px-4 py-3 border-b border-white/10 text-center bg-black/20">
           <div className="text-left">#</div>
           <div className="text-left pl-1">클럽</div>
           <div>경기</div>
@@ -159,7 +159,7 @@ const Standing = () => {
             displayedStandings.map((row) => (
               <div
                 key={row.team.id}
-                className="relative grid grid-cols-[20px_1fr_28px_32px_32px] md:grid-cols-[24px_1fr_32px_40px_36px] gap-2 md:gap-3 items-center text-xs md:text-sm text-white font-medium px-4 py-3 border-b border-white/5 hover:bg-white/10 transition-colors text-center overflow-hidden"
+                className="relative grid grid-cols-[20px_1fr_28px_32px_32px] md:grid-cols-[24px_1fr_32px_40px_36px] gap-2 md:gap-3 items-center text-[11px] sm:text-xs md:text-sm text-white font-medium px-2 sm:px-4 py-2.5 sm:py-3 border-b border-white/5 hover:bg-white/10 transition-colors text-center overflow-hidden"
               >
                 {getStatusColor(row.description) && (
                   <div

@@ -89,9 +89,9 @@ export function Header() {
         {/* Profile */}
         <Link
           href={user ? "/onboarding" : "/login"}
-          className="flex items-center gap-3 border-l border-white/5 pl-6"
+          className="flex items-center gap-2 sm:gap-3 border-l border-white/5 pl-4 sm:pl-6"
         >
-          <div className="flex flex-col items-end">
+          <div className="flex flex-col items-end hidden sm:flex">
             <span className="font-bold text-sm text-white">
               {user ? profile?.name : "로그인을 해주세요!"}
             </span>

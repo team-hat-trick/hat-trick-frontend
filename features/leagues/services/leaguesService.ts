@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api";
-import { ApiResponse, LeagueDetail } from "../types/leagues";
+import { ApiResponse, LeagueDetail, PlayerStatsDetail } from "../types/leagues";
 import { LEAGUES_API_ENDPOINTS } from "./api-config";
 import {
   FixtureList,
@@ -43,11 +43,29 @@ export const leaguesService = {
     timezone: string,
   ): Promise<ApiResponse<string[]>> => {
     const response = await apiClient.get(
-      LEAGUES_API_ENDPOINTS.leagues.getCurrentRound(
-        leagueId,
-        season,
-        timezone,
-      ),
+      LEAGUES_API_ENDPOINTS.leagues.getCurrentRound(leagueId, season, timezone),
+    );
+
+    return response.data;
+  },
+
+  getTopScorers: async (
+    leagueId: number,
+    season: number,
+  ): Promise<ApiResponse<PlayerStatsDetail[]>> => {
+    const response = await apiClient.get(
+      LEAGUES_API_ENDPOINTS.players.getTopScorers(leagueId, season),
+    );
+
+    return response.data;
+  },
+
+  getTopAssists: async (
+    leagueId: number,
+    season: number,
+  ): Promise<ApiResponse<PlayerStatsDetail[]>> => {
+    const response = await apiClient.get(
+      LEAGUES_API_ENDPOINTS.players.getTopAssists(leagueId, season),
     );
 
     return response.data;

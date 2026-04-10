@@ -33,8 +33,6 @@ export default async function Home() {
     profile = profileData;
   }
 
-  console.log(profile);
-
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-emerald-500/30">
       {/* Navigation */}

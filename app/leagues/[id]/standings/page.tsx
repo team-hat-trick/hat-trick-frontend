@@ -1,11 +1,11 @@
 import { LeagueDetailClient } from "@/features/leagues/components/LeagueDetailClient";
 
-const LeagueOverviewPage = async (props: {
+const LeagueStandingPage = async (props: {
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await props.params;
 
-  return <LeagueDetailClient leagueId={parseInt(id)} tab="overview" />;
+  return <LeagueDetailClient leagueId={parseInt(id)} tab="standings" />;
 };
 
-export default LeagueOverviewPage;
+export default LeagueStandingPage;

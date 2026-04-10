@@ -46,10 +46,14 @@ export function Header() {
       {/* Mobile Menu Icon */}
       <div className="flex lg:hidden items-center">
         <button 
-          onClick={() => setIsMenuOpen(true)}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="p-2 -ml-2 text-white hover:bg-white/5 rounded-xl transition-colors"
         >
-          <Menu className={`w-6 h-6 transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : ''}`} />
+          {isMenuOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
       </div>
 

@@ -1,33 +1,50 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import { Header } from "@/features/dashboard/components/Header";
 import { Sidebar } from "@/features/dashboard/components/Sidebar";
 import { MOCK_LEAGUE_INFO } from "../mocks";
 import OverviewTab from "./tabs/OverviewTab";
-import StatisticsTab from "./tabs/StatisticsTab";
-import ClubsTab from "./tabs/ClubsTab";
-import TransfersTab from "./tabs/TransfersTab";
-import HistoryTab from "./tabs/HistoryTab";
-import { Competition } from "@/features/onboarding/types";
 import { useGetLeagueDetail } from "../hooks/useGetLeagueDetail";
+import StandingsTab from "./tabs/StandingsTab";
 
 interface Props {
   leagueId: number;
+  tab: string;
 }
 
-const TABS = [
-  { id: "overview", label: "개요" },
-  { id: "statistics", label: "통계" },
-  { id: "clubs", label: "팀 목록" },
-  { id: "transfers", label: "이적 시장" },
-  { id: "history", label: "히스토리" },
+const TABS = (leagueId: number, leagueType: "League" | "Cup") => [
+  { id: "overview", label: "개요", link: `/leagues/${leagueId}/overview` },
+  { id: "standings", label: "순위", link: `/leagues/${leagueId}/standings` },
+  { id: "fixtures", label: "경기", link: `/leagues/${leagueId}/fixtures` },
+  ...(leagueType === "Cup"
+    ? [
+        {
+          id: "playoffs",
+          label: "플레이오프",
+          link: `/leagues/${leagueId}/playoffs`,
+        },
+      ]
+    : []),
+  {
+    id: "player-statistics",
+    label: "플레이어 통계",
+    link: `/leagues/${leagueId}/player-statistics`,
+  },
+  {
+    id: "team-statistics",
+    label: "팀 통계",
+    link: `/leagues/${leagueId}/team-statistics`,
+  },
+  { id: "news", label: "뉴스", link: `/leagues/${leagueId}/news` },
 ];
 
-export function LeagueDetailClient({ leagueId }: Props) {
-  const [activeTab, setActiveTab] = useState("overview");
+export function LeagueDetailClient({ leagueId, tab }: Props) {
+  const pathname = usePathname();
   const [selectedSeason, setSelectedSeason] = useState<string>("");
   const leagueInfo = MOCK_LEAGUE_INFO;
 
@@ -132,36 +149,40 @@ export function LeagueDetailClient({ leagueId }: Props) {
           <div className="max-w-[1400px] mx-auto w-full px-4 md:px-8 py-6">
             {/* TABS NAVIGATION */}
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-4 border-b border-white/10 mb-8 select-none">
-              {TABS.map((tab) => {
-                const isActive = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`whitespace-nowrap px-5 py-2.5 rounded-[14px] text-sm font-bold transition-all duration-300 ${
-                      isActive
-                        ? "bg-[#00bc7d] text-black shadow-[0_0_15px_rgba(0,188,125,0.4)]"
-                        : "bg-white/5 text-[#90a1b9] hover:bg-white/10 hover:text-white"
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                );
-              })}
+              {TABS(leagueId, leagueDetail.response[0].league.type).map(
+                (tab) => {
+                  const isActive = pathname.includes(tab.link);
+                  return (
+                    <Link
+                      key={tab.id}
+                      href={tab.link}
+                      className={`whitespace-nowrap px-5 py-2.5 rounded-[14px] text-sm font-bold transition-all duration-300 ${
+                        isActive
+                          ? "bg-[#00bc7d] text-black shadow-[0_0_15px_rgba(0,188,125,0.4)]"
+                          : "bg-white/5 text-[#90a1b9] hover:bg-white/10 hover:text-white"
+                      }`}
+                    >
+                      {tab.label}
+                    </Link>
+                  );
+                },
+              )}
             </div>
 
             {/* TAB CONTENT */}
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
-              {activeTab === "overview" && (
+              {tab === "overview" && (
                 <OverviewTab
                   leagueId={leagueId}
                   season={parseInt(selectedSeason)}
                 />
               )}
-              {activeTab === "statistics" && <StatisticsTab />}
-              {activeTab === "clubs" && <ClubsTab />}
-              {activeTab === "transfers" && <TransfersTab />}
-              {activeTab === "history" && <HistoryTab />}
+              {tab === "standings" && (
+                <StandingsTab
+                  leagueId={leagueId}
+                  season={parseInt(selectedSeason)}
+                />
+              )}
             </div>
           </div>
         </main>

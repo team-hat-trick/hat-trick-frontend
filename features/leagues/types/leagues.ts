@@ -1,7 +1,7 @@
 export interface League {
   id: number;
   name: string;
-  type: string;
+  type: "League" | "Cup";
   logo: string;
 }
 

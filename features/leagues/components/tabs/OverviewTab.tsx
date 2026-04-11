@@ -304,7 +304,7 @@ export default function OverviewTab({ leagueId, season }: Props) {
     const recentMatches = teamRecordByLeague(teamId);
 
     return (
-      <div className="flex items-center justify-center gap-1">
+      <div className="flex items-center justify-center gap-0.5 md:gap-1">
         {recentMatches
           .map((match) => {
             const isHome = match.teams.home.id === teamId;
@@ -325,7 +325,7 @@ export default function OverviewTab({ leagueId, season }: Props) {
             return (
               <div
                 key={match.fixture.id}
-                className={`w-10 h-10 md:w-6 md:h-6 flex items-center justify-center rounded-[5px] text-white text-[9px] md:text-[10px] font-bold ${bgColor}`}
+                className={`w-[14px] h-[14px] md:w-6 md:h-6 flex items-center justify-center rounded-[2px] md:rounded-[5px] text-white text-[8px] md:text-[10px] font-bold ${bgColor}`}
                 title={`${match.teams.home.name} ${match.goals.home ?? "-"} : ${match.goals.away ?? "-"} ${match.teams.away.name}`}
               >
                 {result}
@@ -352,7 +352,7 @@ export default function OverviewTab({ leagueId, season }: Props) {
     <div className="flex flex-col w-full pb-8 pt-4 gap-8">
       {/* 🟦 상단 영역: 순위표 & 라운드 일정 */}
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
-        <div className="xl:col-span-7 flex flex-col gap-6 w-full">
+        <div className="xl:col-span-8 flex flex-col gap-6 w-full">
           <div className="bg-[#0f1115]/80 backdrop-blur-xl border border-white/10 rounded-[24px] shadow-2xl relative overflow-hidden">
             <div className="absolute -top-32 -right-32 w-96 h-96 bg-[#00bc7d]/10 rounded-full blur-[100px] pointer-events-none" />
 
@@ -363,19 +363,19 @@ export default function OverviewTab({ leagueId, season }: Props) {
               </h2>
             </div>
 
-            <div className="overflow-x-auto relative z-10 px-4 md:px-8 pb-6 md:pb-8 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full">
-              <table className="w-full text-sm text-left whitespace-nowrap min-w-full md:min-w-[650px]">
+            <div className="overflow-x-auto w-full relative z-10 px-2 md:px-8 pb-6 md:pb-8 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full">
+              <table className="w-full text-left table-auto">
                 <thead className="text-[10px] md:text-[11px] text-[#90a1b9] font-bold border-b border-white/10 uppercase tracking-wider bg-white/[0.02]">
                   <tr>
-                    <th className="px-2 md:px-4 py-3 md:py-4 text-center w-8 md:w-12 rounded-tl-xl">#</th>
-                    <th className="px-2 md:px-4 py-3 md:py-4">클럽</th>
-                    <th className="px-2 md:px-3 py-3 md:py-4 text-center">경기</th>
-                    <th className="px-3 py-4 text-center hidden md:table-cell">승</th>
-                    <th className="px-3 py-4 text-center hidden md:table-cell">무</th>
-                    <th className="px-3 py-4 text-center hidden md:table-cell">패</th>
-                    <th className="px-3 py-4 text-center hidden md:table-cell">득실</th>
-                    <th className="px-6 py-4 text-center hidden md:table-cell">최근 5경기</th>
-                    <th className="px-2 md:px-4 py-3 md:py-4 text-center rounded-tr-xl">승점</th>
+                    <th className="px-2 md:px-4 py-3 md:py-4 text-center w-8 md:w-12 rounded-tl-xl whitespace-nowrap">#</th>
+                    <th className="px-2 md:px-4 py-3 md:py-4 whitespace-nowrap">클럽</th>
+                    <th className="px-2 md:px-3 py-3 md:py-4 text-center hidden sm:table-cell whitespace-nowrap">경기</th>
+                    <th className="px-3 py-4 text-center hidden md:table-cell whitespace-nowrap">승</th>
+                    <th className="px-3 py-4 text-center hidden md:table-cell whitespace-nowrap">무</th>
+                    <th className="px-3 py-4 text-center hidden md:table-cell whitespace-nowrap">패</th>
+                    <th className="px-2 md:px-3 py-3 md:py-4 text-center whitespace-nowrap">득실</th>
+                    <th className="px-6 py-4 text-center hidden md:table-cell whitespace-nowrap">최근 5경기</th>
+                    <th className="px-2 md:px-4 py-3 md:py-4 text-center rounded-tr-xl whitespace-nowrap">승점</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -384,16 +384,16 @@ export default function OverviewTab({ leagueId, season }: Props) {
                       key={row.team.id}
                       className="border-b border-white/5 hover:bg-white/[0.03] transition-all duration-300 group"
                     >
-                      <td className="px-2 md:px-4 py-3 md:py-4 text-center">
+                      <td className="px-2 md:px-4 py-2.5 md:py-4 text-center w-8 md:w-12">
                         <span
-                          className={`font-black text-sm md:text-base ${idx < 4 ? "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" : "text-white/40"}`}
+                          className={`font-black text-[11px] md:text-base ${idx < 4 ? "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" : "text-white/40"}`}
                         >
                           {row.rank}
                         </span>
                       </td>
-                      <td className="px-2 md:px-4 py-2 font-bold">
-                        <div className="flex items-center gap-2 md:gap-4">
-                          <div className="w-7 h-7 md:w-9 md:h-9 shrink-0 bg-white/5 rounded-full flex items-center justify-center p-1 md:p-1.5 border border-white/5 group-hover:scale-110 transition-transform shadow-sm">
+                      <td className="px-2 md:px-4 py-1.5 md:py-2 font-bold">
+                        <div className="flex items-center gap-1.5 md:gap-4">
+                          <div className="w-6 h-6 md:w-9 md:h-9 shrink-0 bg-white/5 rounded-full flex items-center justify-center p-1 md:p-1.5 border border-white/5 group-hover:scale-110 transition-transform shadow-sm">
                             <Image
                               src={row.team.logo}
                               alt={row.team.name}
@@ -402,12 +402,12 @@ export default function OverviewTab({ leagueId, season }: Props) {
                               className="w-4 h-4 md:w-6 md:h-6 object-contain shrink-0"
                             />
                           </div>
-                          <span className="text-sm md:text-base group-hover:text-white transition-colors text-white/90 truncate max-w-[120px] md:max-w-[200px]">
+                          <span className="text-[11px] md:text-base group-hover:text-white transition-colors text-white/90 truncate block">
                             {row.team.name}
                           </span>
                         </div>
                       </td>
-                      <td className="px-2 md:px-3 py-3 md:py-4 text-center text-white/60 font-semibold text-xs md:text-sm">
+                      <td className="px-2 md:px-3 py-2.5 md:py-4 text-center text-white/60 font-semibold text-[11px] md:text-sm hidden sm:table-cell">
                         {row.all.played}
                       </td>
                       <td className="px-3 py-4 text-center text-white/60 font-semibold hidden md:table-cell">
@@ -419,14 +419,14 @@ export default function OverviewTab({ leagueId, season }: Props) {
                       <td className="px-3 py-4 text-center text-white/60 font-semibold hidden md:table-cell">
                         {row.all.lose}
                       </td>
-                      <td className="px-3 py-4 text-center font-bold text-[#90a1b9] hidden md:table-cell">
+                      <td className="px-2 md:px-3 py-2.5 md:py-4 text-center font-bold text-[#90a1b9] text-[11px] md:text-sm whitespace-nowrap">
                         {row.goalsDiff > 0 ? `+${row.goalsDiff}` : row.goalsDiff}
                       </td>
                       <td className="px-4 py-4 text-center hidden md:table-cell">
                         {renderRecentForm(row.team.id)}
                       </td>
-                      <td className="px-2 md:px-4 py-3 md:py-4 text-center">
-                        <span className="font-black text-base md:text-lg text-[#00bc7d]">
+                      <td className="px-2 md:px-4 py-2.5 md:py-4 text-center">
+                        <span className="font-black text-[12px] md:text-lg text-[#00bc7d]">
                           {row.points}
                         </span>
                       </td>
@@ -438,49 +438,49 @@ export default function OverviewTab({ leagueId, season }: Props) {
           </div>
         </div>
 
-        <div className="xl:col-span-5 flex flex-col gap-6 w-full">
+        <div className="xl:col-span-4 flex flex-col gap-6 w-full">
           {rounds.length > 0 && (
             <div className="bg-[#0f1115]/80 backdrop-blur-xl border border-white/10 rounded-[24px] shadow-2xl relative overflow-hidden flex flex-col h-full">
               <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-[#2b7fff]/10 rounded-full blur-[100px] pointer-events-none" />
 
-              <div className="p-4 md:p-8 border-b border-white/5 relative z-50 w-full shrink-0">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xl md:text-2xl font-black flex items-center gap-2 md:gap-3 tracking-tight">
-                    <span className="w-1.5 h-6 md:h-7 bg-gradient-to-b from-[#2b7fff] to-[#2b7fff]/20 rounded-full shadow-[0_0_15px_rgba(43,127,255,0.8)]"></span>
+              <div className="p-4 md:p-6 border-b border-white/5 relative z-50 w-full shrink-0">
+                <div className="flex items-center justify-between gap-2">
+                  <h2 className="text-base md:text-xl font-black flex items-center gap-2 tracking-tight shrink-0">
+                    <span className="w-1.5 h-5 md:h-6 bg-gradient-to-b from-[#2b7fff] to-[#2b7fff]/20 rounded-full shadow-[0_0_15px_rgba(43,127,255,0.8)]"></span>
                     라운드 일정
                   </h2>
 
                   <div
-                    className="flex items-center gap-1 bg-black/40 rounded-full p-1 border border-white/10 backdrop-blur-md shadow-inner relative"
+                    className="flex items-center gap-0.5 md:gap-1 bg-black/40 rounded-full p-0.5 md:p-1 border border-white/10 backdrop-blur-md shadow-inner relative"
                     ref={dropdownRef}
                   >
                     <button
                       onClick={handlePrevRound}
                       disabled={currentRoundIndex === 0}
-                      className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 text-[#90a1b9] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-transparent"
+                      className="w-7 h-7 md:w-9 md:h-9 flex items-center justify-center rounded-full hover:bg-white/10 text-[#90a1b9] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-transparent"
                     >
-                      <ChevronLeft className="w-5 h-5" />
+                      <ChevronLeft className="w-3.5 h-3.5 md:w-5 md:h-5" />
                     </button>
                     <button
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className="flex items-center gap-1.5 px-3 min-w-[85px] justify-center hover:bg-white/5 rounded-full py-1.5 transition-colors group"
+                      className="flex items-center gap-1 px-2 md:px-3 min-w-[72px] md:min-w-[85px] justify-center hover:bg-white/5 rounded-full py-1 md:py-1.5 transition-colors group"
                     >
-                      <span className="text-[13px] font-black text-white tracking-wider group-hover:text-[#2b7fff] transition-colors">
+                      <span className="text-[11px] md:text-[13px] font-black text-white tracking-wider group-hover:text-[#2b7fff] transition-colors">
                         {currentRoundName.replace(
                           "Regular Season - ",
                           "라운드 ",
                         )}
                       </span>
                       <ChevronDown
-                        className={`w-3.5 h-3.5 text-white/50 group-hover:text-[#2b7fff] transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
+                        className={`w-3 h-3 md:w-3.5 md:h-3.5 text-white/50 group-hover:text-[#2b7fff] transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
                       />
                     </button>
                     <button
                       onClick={handleNextRound}
                       disabled={currentRoundIndex === rounds.length - 1}
-                      className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 text-[#90a1b9] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-transparent"
+                      className="w-7 h-7 md:w-9 md:h-9 flex items-center justify-center rounded-full hover:bg-white/10 text-[#90a1b9] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-transparent"
                     >
-                      <ChevronRight className="w-5 h-5" />
+                      <ChevronRight className="w-3.5 h-3.5 md:w-5 md:h-5" />
                     </button>
 
                     {isDropdownOpen && (
@@ -534,7 +534,7 @@ export default function OverviewTab({ leagueId, season }: Props) {
                           <div className="flex-1 h-[1px] bg-gradient-to-r from-white/10 to-transparent ml-4" />
                         </div>
 
-                        <div className="flex flex-col gap-2.5">
+                        <div className="flex flex-col gap-2">
                           {matches.map((match: any) => {
                             const isFinished =
                               match.fixture.status.short === "FT" ||
@@ -544,21 +544,21 @@ export default function OverviewTab({ leagueId, season }: Props) {
                             return (
                               <div
                                 key={match.fixture.id}
-                                className="group flex flex-col py-3 px-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/20 hover:bg-white/[0.05] transition-all duration-300 shadow-sm relative overflow-hidden"
+                                className="group flex flex-col py-2 md:py-3 px-3 md:px-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/20 hover:bg-white/[0.05] transition-all duration-300 shadow-sm relative overflow-hidden"
                               >
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out pointer-events-none" />
 
                                 <div className="flex items-center justify-between w-full relative z-10">
-                                  <div className="flex items-center gap-3 w-[35%]">
+                                  <div className="flex items-center gap-1.5 md:gap-3 w-[35%]">
                                     <Image
                                       src={match.teams.home.logo}
                                       alt={match.teams.home.name}
                                       width={24}
                                       height={24}
-                                      className="w-6 h-6 object-contain shrink-0 group-hover:scale-110 transition-transform"
+                                      className="w-5 h-5 md:w-6 md:h-6 object-contain shrink-0 group-hover:scale-110 transition-transform"
                                     />
                                     <span
-                                      className={`font-bold text-sm truncate transition-colors ${match.teams.home.winner === true ? "text-white" : "text-white/70 group-hover:text-white"}`}
+                                      className={`font-bold text-[11px] md:text-sm truncate transition-colors ${match.teams.home.winner === true ? "text-white" : "text-white/70 group-hover:text-white"}`}
                                     >
                                       {match.teams.home.name}
                                     </span>
@@ -566,8 +566,8 @@ export default function OverviewTab({ leagueId, season }: Props) {
 
                                   <div className="flex flex-col items-center justify-center w-[30%] shrink-0">
                                     {isFinished ? (
-                                      <div className="flex flex-col items-center gap-1">
-                                        <div className="flex items-center gap-2 text-2xl font-black tabular-nums tracking-tighter">
+                                      <div className="flex flex-col items-center gap-0.5">
+                                        <div className="flex items-center gap-1.5 md:gap-2 text-lg md:text-2xl font-black tabular-nums tracking-tighter">
                                           <span
                                             className={
                                               match.teams.home.winner
@@ -577,7 +577,7 @@ export default function OverviewTab({ leagueId, season }: Props) {
                                           >
                                             {match.goals.home}
                                           </span>
-                                          <span className="text-white/10 text-base font-medium">
+                                          <span className="text-white/10 text-sm md:text-base font-medium">
                                             -
                                           </span>
                                           <span
@@ -590,12 +590,12 @@ export default function OverviewTab({ leagueId, season }: Props) {
                                             {match.goals.away}
                                           </span>
                                         </div>
-                                        <span className="text-[9px] font-bold text-white/30 uppercase tracking-widest leading-none">
+                                        <span className="text-[8px] md:text-[9px] font-bold text-white/30 uppercase tracking-widest leading-none">
                                           {match.fixture.status.short}
                                         </span>
                                       </div>
                                     ) : (
-                                      <span className="text-sm md:text-base font-black text-white px-3 py-1 bg-white/5 rounded-lg tracking-tight tabular-nums border border-white/5">
+                                      <span className="text-[11px] md:text-sm font-black text-white px-2 md:px-3 py-0.5 md:py-1 bg-white/5 rounded-lg tracking-tight tabular-nums border border-white/5">
                                         {dayjs(match.fixture.date).format(
                                           "HH:mm",
                                         )}
@@ -603,9 +603,9 @@ export default function OverviewTab({ leagueId, season }: Props) {
                                     )}
                                   </div>
 
-                                  <div className="flex items-center justify-end gap-3 w-[35%] text-right">
+                                  <div className="flex items-center justify-end gap-1.5 md:gap-3 w-[35%] text-right">
                                     <span
-                                      className={`font-bold text-sm truncate transition-colors ${match.teams.away.winner === true ? "text-white" : "text-white/70 group-hover:text-white"}`}
+                                      className={`font-bold text-[11px] md:text-sm truncate transition-colors ${match.teams.away.winner === true ? "text-white" : "text-white/70 group-hover:text-white"}`}
                                     >
                                       {match.teams.away.name}
                                     </span>
@@ -614,7 +614,7 @@ export default function OverviewTab({ leagueId, season }: Props) {
                                       alt={match.teams.away.name}
                                       width={24}
                                       height={24}
-                                      className="w-6 h-6 object-contain shrink-0 group-hover:scale-110 transition-transform"
+                                      className="w-5 h-5 md:w-6 md:h-6 object-contain shrink-0 group-hover:scale-110 transition-transform"
                                     />
                                   </div>
                                 </div>

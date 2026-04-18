@@ -43,7 +43,12 @@ export function LeagueSection({ league, matches }: LeagueSectionProps) {
       {
         <div className="flex flex-col gap-4">
           {matches.map((match) => (
-            <MatchCard key={match.fixture.id} match={match} />
+            <MatchCard
+              key={match.fixture.id}
+              leagueId={league.id}
+              season={league.season}
+              match={match}
+            />
           ))}
         </div>
       }

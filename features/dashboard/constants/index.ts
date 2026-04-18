@@ -34,3 +34,5 @@ export const LEAGUE_OPTIONS = [
 ];
 
 export const LIVE_STATUS_CODE = ["1H", "2H", "HT", "ET", "BT", "P", "SUSP", "INT"];
+
+export const TWO_LEGGED_TOURNAMENT_IDS = [2, 3, 848];

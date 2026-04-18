@@ -9,7 +9,7 @@ export const useGetTopRating = (leagueId: number, season: number) => {
     enabled: !!leagueId && !!season && !isNaN(season),
     queryFn: async () => {
       let { data, error } = await supabase
-        .from("top_rated_players")
+        .from("statistics_players")
         .select("*")
         .eq("league_id", leagueId)
         .eq("season", season)
@@ -34,7 +34,7 @@ export const useGetTopRating = (leagueId: number, season: number) => {
         );
 
         const { data: newData, error: newError } = await supabase
-          .from("top_rated_players")
+          .from("statistics_players")
           .select("*")
           .eq("league_id", leagueId)
           .eq("season", season)

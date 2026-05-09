@@ -139,6 +139,147 @@ export interface PlayerStatsDetail {
   statistics: PlayerStatistics[];
 }
 
+export interface Team {
+  id: number;
+  name: string;
+  code: string;
+  country: string;
+  founded: number;
+  national: boolean;
+  logo: string;
+}
+
+export interface Venue {
+  id: number;
+  name: string;
+  address: string;
+  city: string;
+  capacity: number;
+  surface: string;
+  image: string;
+}
+
+export interface TeamsByLeagueData {
+  team: Team;
+  venue: Venue;
+}
+
+export interface TeamStatsHomeAndAway {
+  home: number | string;
+  away: number | string;
+  total: number | string;
+}
+
+export interface TeamStatsTotalAndPercentage {
+  total: number | null;
+  percentage: string | null;
+}
+
+export interface TeamStatsMinute {
+  "0-15": TeamStatsTotalAndPercentage;
+  "16-30": TeamStatsTotalAndPercentage;
+  "31-45": TeamStatsTotalAndPercentage;
+  "46-60": TeamStatsTotalAndPercentage;
+  "61-75": TeamStatsTotalAndPercentage;
+  "76-90": TeamStatsTotalAndPercentage;
+  "91-105": TeamStatsTotalAndPercentage;
+  "106-120": TeamStatsTotalAndPercentage;
+}
+
+export interface TeamStatsUnderOverData {
+  over: number;
+  under: number;
+}
+
+export interface TeamStatsUnderOver {
+  "0.5": TeamStatsUnderOverData;
+  "1.5": TeamStatsUnderOverData;
+  "2.5": TeamStatsUnderOverData;
+  "3.5": TeamStatsUnderOverData;
+  "4.5": TeamStatsUnderOverData;
+}
+
+export interface TeamStatsLineup {
+  formation: string;
+  played: number;
+}
+
+export interface TeamStatistics {
+  league: {
+    id: number;
+    name: string;
+    country: string;
+    logo: string;
+    flag: string;
+    season: number;
+  };
+  team: Team;
+  form: string | null;
+  fixtures: {
+    played: TeamStatsHomeAndAway;
+    wins: TeamStatsHomeAndAway;
+    draws: TeamStatsHomeAndAway;
+    loses: TeamStatsHomeAndAway;
+  };
+  goals: {
+    for: {
+      total: TeamStatsHomeAndAway;
+      average: TeamStatsHomeAndAway;
+      minute: TeamStatsMinute;
+      under_over: TeamStatsUnderOver;
+    };
+    against: {
+      total: TeamStatsHomeAndAway;
+      average: TeamStatsHomeAndAway;
+      minute: TeamStatsMinute;
+      under_over: TeamStatsUnderOver;
+    };
+  };
+  biggest: {
+    streak: {
+      wins: number;
+      draws: number;
+      loses: number;
+    };
+    wins: {
+      home: string;
+      away: string;
+    };
+    loses: {
+      home: string;
+      away: string;
+    };
+    goals: {
+      for: {
+        home: number;
+        away: number;
+      };
+      against: {
+        home: number;
+        away: number;
+      };
+    };
+  };
+  clean_sheet: TeamStatsHomeAndAway;
+  failed_to_score: TeamStatsHomeAndAway;
+  penalty: {
+    scored: {
+      total: number;
+      percentage: string;
+    };
+    missed: {
+      total: number;
+      percentage: string;
+    };
+    total: number;
+  };
+  lineups: TeamStatsLineup | TeamStatsLineup[];
+  cards: {
+    yellow: TeamStatsMinute;
+    red: TeamStatsMinute;
+  };
+}
+
 export interface ApiResponse<T> {
   get: string;
   parameters: {

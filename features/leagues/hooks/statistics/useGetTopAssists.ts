@@ -1,6 +1,6 @@
-import type { ApiResponse, PlayerStatsDetail } from "../types/leagues";
+import type { ApiResponse, PlayerStatsDetail } from "../../types/leagues";
 import { useQuery } from "@tanstack/react-query";
-import { leaguesService } from "../services/leaguesService";
+import { leaguesService } from "../../services/leaguesService";
 
 export const useGetTopAssists = (leagueId: number, season: number) => {
   return useQuery<ApiResponse<PlayerStatsDetail[]>>({

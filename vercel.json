@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/sync/cron/top-rated",
+      "path": "/api/sync/cron/player-stats",
       "schedule": "0 21 * * 1"
     }
   ]

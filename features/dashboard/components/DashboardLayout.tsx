@@ -6,7 +6,6 @@ import { Header } from "./Header";
 import { DateSelector } from "./DateSelector";
 import { LeagueSection } from "./LeagueSection";
 import { RightSideBar } from "./RightSideBar";
-import { MOCK_LEAGUES, MOCK_MATCHES } from "../constants/mockData";
 import { Calendar, ChevronDown, Filter } from "lucide-react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
@@ -25,16 +24,6 @@ type LeagueType = {
 };
 
 export function DashboardLayout() {
-  // Group matches by league
-  const groupedMatches = MOCK_MATCHES.reduce(
-    (acc, match) => {
-      if (!acc[match.leagueId]) acc[match.leagueId] = [];
-      acc[match.leagueId].push(match);
-      return acc;
-    },
-    {} as Record<string, typeof MOCK_MATCHES>,
-  );
-
   const [selectedDate, setSelectedDate] = useState<string>(
     dayjs().format("YYYY-MM-DD"),
   );

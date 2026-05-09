@@ -18,9 +18,9 @@ import {
   Newspaper, // 💡 뉴스 아이콘 추가
 } from "lucide-react";
 import ko from "dayjs/locale/ko";
-import { useGetTopScorers } from "../../hooks/useGetTopScorers";
-import { useGetTopAssists } from "../../hooks/useGetTopAssists";
-import { useGetTopRating } from "../../hooks/useGetTopRating";
+import { useGetTopScorers } from "../../hooks/statistics/useGetTopScorers";
+import { useGetTopAssists } from "../../hooks/statistics/useGetTopAssists";
+import { useGetTopRating } from "../../hooks/statistics/useGetTopRating";
 import { useGetLeagueNews } from "../../hooks/useGetLeagueNews";
 
 interface Props {
@@ -367,15 +367,33 @@ export default function OverviewTab({ leagueId, season }: Props) {
               <table className="w-full text-left table-auto">
                 <thead className="text-[10px] md:text-[11px] text-[#90a1b9] font-bold border-b border-white/10 uppercase tracking-wider bg-white/[0.02]">
                   <tr>
-                    <th className="px-2 md:px-4 py-3 md:py-4 text-center w-8 md:w-12 rounded-tl-xl whitespace-nowrap">#</th>
-                    <th className="px-2 md:px-4 py-3 md:py-4 whitespace-nowrap">클럽</th>
-                    <th className="px-2 md:px-3 py-3 md:py-4 text-center hidden sm:table-cell whitespace-nowrap">경기</th>
-                    <th className="px-3 py-4 text-center hidden md:table-cell whitespace-nowrap">승</th>
-                    <th className="px-3 py-4 text-center hidden md:table-cell whitespace-nowrap">무</th>
-                    <th className="px-3 py-4 text-center hidden md:table-cell whitespace-nowrap">패</th>
-                    <th className="px-2 md:px-3 py-3 md:py-4 text-center whitespace-nowrap">득실</th>
-                    <th className="px-6 py-4 text-center hidden md:table-cell whitespace-nowrap">최근 5경기</th>
-                    <th className="px-2 md:px-4 py-3 md:py-4 text-center rounded-tr-xl whitespace-nowrap">승점</th>
+                    <th className="px-2 md:px-4 py-3 md:py-4 text-center w-8 md:w-12 rounded-tl-xl whitespace-nowrap">
+                      #
+                    </th>
+                    <th className="px-2 md:px-4 py-3 md:py-4 whitespace-nowrap">
+                      클럽
+                    </th>
+                    <th className="px-2 md:px-3 py-3 md:py-4 text-center hidden sm:table-cell whitespace-nowrap">
+                      경기
+                    </th>
+                    <th className="px-3 py-4 text-center hidden md:table-cell whitespace-nowrap">
+                      승
+                    </th>
+                    <th className="px-3 py-4 text-center hidden md:table-cell whitespace-nowrap">
+                      무
+                    </th>
+                    <th className="px-3 py-4 text-center hidden md:table-cell whitespace-nowrap">
+                      패
+                    </th>
+                    <th className="px-2 md:px-3 py-3 md:py-4 text-center whitespace-nowrap">
+                      득실
+                    </th>
+                    <th className="px-6 py-4 text-center hidden md:table-cell whitespace-nowrap">
+                      최근 5경기
+                    </th>
+                    <th className="px-2 md:px-4 py-3 md:py-4 text-center rounded-tr-xl whitespace-nowrap">
+                      승점
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -420,7 +438,9 @@ export default function OverviewTab({ leagueId, season }: Props) {
                         {row.all.lose}
                       </td>
                       <td className="px-2 md:px-3 py-2.5 md:py-4 text-center font-bold text-[#90a1b9] text-[11px] md:text-sm whitespace-nowrap">
-                        {row.goalsDiff > 0 ? `+${row.goalsDiff}` : row.goalsDiff}
+                        {row.goalsDiff > 0
+                          ? `+${row.goalsDiff}`
+                          : row.goalsDiff}
                       </td>
                       <td className="px-4 py-4 text-center hidden md:table-cell">
                         {renderRecentForm(row.team.id)}

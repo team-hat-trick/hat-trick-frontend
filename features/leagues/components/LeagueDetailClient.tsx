@@ -11,6 +11,9 @@ import { MOCK_LEAGUE_INFO } from "../mocks";
 import OverviewTab from "./tabs/OverviewTab";
 import { useGetLeagueDetail } from "../hooks/useGetLeagueDetail";
 import StandingsTab from "./tabs/StandingsTab";
+import FixturesTab from "./tabs/FixturesTab";
+import PlayerStatisticsTab from "./tabs/PlayerStatisticsTab";
+import TeamStatisticsTab from "./tabs/TeamStatisticsTab";
 
 interface Props {
   leagueId: number;
@@ -179,6 +182,24 @@ export function LeagueDetailClient({ leagueId, tab }: Props) {
               )}
               {tab === "standings" && (
                 <StandingsTab
+                  leagueId={leagueId}
+                  season={parseInt(selectedSeason)}
+                />
+              )}
+              {tab === "fixtures" && (
+                <FixturesTab
+                  leagueId={leagueId}
+                  season={parseInt(selectedSeason)}
+                />
+              )}
+              {tab === "player-statistics" && (
+                <PlayerStatisticsTab
+                  leagueId={leagueId}
+                  season={parseInt(selectedSeason)}
+                />
+              )}
+              {tab === "team-statistics" && (
+                <TeamStatisticsTab
                   leagueId={leagueId}
                   season={parseInt(selectedSeason)}
                 />

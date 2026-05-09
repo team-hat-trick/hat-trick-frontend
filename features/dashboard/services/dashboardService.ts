@@ -1,5 +1,9 @@
 import { apiClient } from "@/lib/api";
-import type { ApiResponse, FixtureList, StandingsData } from "../types/dashboard";
+import type {
+  ApiResponse,
+  FixtureList,
+  StandingsData,
+} from "../types/dashboard";
 import { DASHBOARD_API_ENDPOINTS } from "./api-config";
 
 export const dashboardService = {
@@ -22,9 +26,30 @@ export const dashboardService = {
     return response.data;
   },
 
-  getStandings: async (leagueId: number, season: number): Promise<ApiResponse<StandingsData[]>> => {
+  getStandings: async (
+    leagueId: number,
+    season: number,
+  ): Promise<ApiResponse<StandingsData[]>> => {
     const response = await apiClient.get(
       DASHBOARD_API_ENDPOINTS.sideBar.standings(leagueId, season),
+    );
+
+    return response.data;
+  },
+
+  getHeadToHead: async (
+    h2h: string,
+    leagueId: number,
+    season: number,
+    timezone?: string,
+  ): Promise<ApiResponse<FixtureList[]>> => {
+    const response = await apiClient.get(
+      DASHBOARD_API_ENDPOINTS.matches.headToHead(
+        h2h,
+        leagueId,
+        season,
+        timezone,
+      ),
     );
 
     return response.data;

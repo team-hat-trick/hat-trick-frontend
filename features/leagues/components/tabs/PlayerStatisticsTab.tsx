@@ -24,27 +24,27 @@ import {
   CircleX,
   Hand,
 } from "lucide-react";
-import { useGetTopScorers } from "../../hooks/statistics/useGetTopScorers";
-import { useGetTopAssists } from "../../hooks/statistics/useGetTopAssists";
-import { useGetTopRating } from "../../hooks/statistics/useGetTopRating";
-import { useGetTopYellowcards } from "../../hooks/statistics/useGetTopYellowcards";
-import { useGetTopRedcards } from "../../hooks/statistics/useGetTopRedcards";
-import { useGetTopGameMinutes } from "../../hooks/statistics/useGetTopGameMinutes";
-import { useGetTotalShots } from "../../hooks/statistics/useGetTotalShots";
-import { useGetShotsOnTarget } from "../../hooks/statistics/useGetShotsOnTarget";
-import { useGetKeyPasses } from "../../hooks/statistics/useGetKeyPasses";
-import { useGetPassesAccuracy } from "../../hooks/statistics/useGetPassesAccuracy";
-import { useGetDribbleSuccessRate } from "../../hooks/statistics/useGetDribbleSuccessRate";
-import { useGetPenaltySuccessRate } from "../../hooks/statistics/useGetPenaltySuccessRate";
-import { useGetTackleSuccess } from "../../hooks/statistics/useGetTackleSuccess";
-import { useGetBlocks } from "../../hooks/statistics/useGetBlocks";
-import { useGetInterceptions } from "../../hooks/statistics/useGetInterceptions";
-import { useGetDuelsWon } from "../../hooks/statistics/useGetDuelsWon";
-import { useGetFoulsDrawn } from "../../hooks/statistics/useGetFoulsDrawn";
-import { useGetFoulsCommitted } from "../../hooks/statistics/useGetFoulsCommitted";
-import { useGetPenaltyCommitted } from "../../hooks/statistics/useGetPenaltyCommitted";
-import { useGetPenaltySaved } from "../../hooks/statistics/useGetPenaltySaved";
-import { useGetSavedRate } from "../../hooks/statistics/useGetSavedRate";
+import { useGetTopScorers } from "../../hooks/statistics/players/useGetTopScorers";
+import { useGetTopAssists } from "../../hooks/statistics/players/useGetTopAssists";
+import { useGetTopRating } from "../../hooks/statistics/players/useGetTopRating";
+import { useGetTopYellowcards } from "../../hooks/statistics/players/useGetTopYellowcards";
+import { useGetTopRedcards } from "../../hooks/statistics/players/useGetTopRedcards";
+import { useGetTopGameMinutes } from "../../hooks/statistics/players/useGetTopGameMinutes";
+import { useGetTotalShots } from "../../hooks/statistics/players/useGetTotalShots";
+import { useGetShotsOnTarget } from "../../hooks/statistics/players/useGetShotsOnTarget";
+import { useGetKeyPasses } from "../../hooks/statistics/players/useGetKeyPasses";
+import { useGetPassesAccuracy } from "../../hooks/statistics/players/useGetPassesAccuracy";
+import { useGetDribbleSuccessRate } from "../../hooks/statistics/players/useGetDribbleSuccessRate";
+import { useGetPenaltySuccessRate } from "../../hooks/statistics/players/useGetPenaltySuccessRate";
+import { useGetTackleSuccess } from "../../hooks/statistics/players/useGetTackleSuccess";
+import { useGetBlocks } from "../../hooks/statistics/players/useGetBlocks";
+import { useGetInterceptions } from "../../hooks/statistics/players/useGetInterceptions";
+import { useGetDuelsWon } from "../../hooks/statistics/players/useGetDuelsWon";
+import { useGetFoulsDrawn } from "../../hooks/statistics/players/useGetFoulsDrawn";
+import { useGetFoulsCommitted } from "../../hooks/statistics/players/useGetFoulsCommitted";
+import { useGetPenaltyCommitted } from "../../hooks/statistics/players/useGetPenaltyCommitted";
+import { useGetPenaltySaved } from "../../hooks/statistics/players/useGetPenaltySaved";
+import { useGetSavedRate } from "../../hooks/statistics/players/useGetSavedRate";
 
 interface Props {
   leagueId: number;

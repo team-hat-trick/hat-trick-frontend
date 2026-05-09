@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { PlayerStatsDetail, type ApiResponse } from "../../types/leagues";
-import { leaguesService } from "../../services/leaguesService";
+import { PlayerStatsDetail, type ApiResponse } from "../../../types/leagues";
+import { leaguesService } from "../../../services/leaguesService";
 
 export const useGetTopYellowcards = (leagueId: number, season: number) => {
   return useQuery<ApiResponse<PlayerStatsDetail[]>>({

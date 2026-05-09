@@ -18,9 +18,9 @@ import {
   Newspaper, // 💡 뉴스 아이콘 추가
 } from "lucide-react";
 import ko from "dayjs/locale/ko";
-import { useGetTopScorers } from "../../hooks/statistics/useGetTopScorers";
-import { useGetTopAssists } from "../../hooks/statistics/useGetTopAssists";
-import { useGetTopRating } from "../../hooks/statistics/useGetTopRating";
+import { useGetTopScorers } from "../../hooks/statistics/players/useGetTopScorers";
+import { useGetTopAssists } from "../../hooks/statistics/players/useGetTopAssists";
+import { useGetTopRating } from "../../hooks/statistics/players/useGetTopRating";
 import { useGetLeagueNews } from "../../hooks/useGetLeagueNews";
 
 interface Props {

@@ -21,7 +21,7 @@ export const useGetBlocks = (leagueId: number, season: number) => {
             if (!data || data.length === 0) {
                 console.log(
                     `[${leagueId} 리그] DB가 비어있어 API 동기화를 시작합니다... ⏳`,
-                );
+                );``
 
                 const syncRes = await fetch(
                     `/api/sync/cron/player-stats?league=${leagueId}&season=${season}`,

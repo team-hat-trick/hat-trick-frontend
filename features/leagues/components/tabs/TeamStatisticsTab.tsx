@@ -2,8 +2,18 @@
 
 import React, { useMemo } from "react";
 import Image from "next/image";
-import { ChevronRight, Target, Shield } from "lucide-react";
-import { useGetAvgGoals } from "../../hooks/statistics/teams/useGetAvgGoals"; // 경로를 환경에 맞게 맞춰주세요!
+import {
+  ChevronRight,
+  Target,
+  Shield,
+  Percent,
+  Minus,
+  Plus,
+  Flame,
+  TrendingUp,
+} from "lucide-react";
+// 💡 승률 훅은 지우고, 데이터를 한 번에 가져오는 이 훅만 사용합니다!
+import { useGetTeamStats } from "../../hooks/statistics/teams/useGetTeamStatistics";
 
 interface Props {
   leagueId: number;
@@ -11,41 +21,113 @@ interface Props {
 }
 
 export default function TeamStatisticsTab({ leagueId, season }: Props) {
-  const { data: teamData, isLoading, isError } = useGetAvgGoals(leagueId, season);
+  // 💡 DB에서 20개 팀의 모든 정보(득점, 실점, 승률 등)를 한 번에 가져옵니다.
+  const {
+    data: teamStatsData,
+    isLoading,
+    isError,
+  } = useGetTeamStats(leagueId, season);
 
-  // ⚔️ 최고의 창: 경기당 최다 득점 (내림차순)
+  // 1. ⚔️ 경기당 최다 득점 (내림차순)
   const unifiedTopScoring = useMemo(() => {
-    if (!teamData || teamData.length === 0) return [];
+    if (!teamStatsData || teamStatsData.length === 0) return [];
 
-    const sorted = [...teamData].sort(
-      (a: any, b: any) => (b.avg_goals_for || 0) - (a.avg_goals_for || 0)
+    const sorted = [...teamStatsData].sort(
+      (a: any, b: any) => (b.avg_goals_for || 0) - (a.avg_goals_for || 0),
     );
 
     return sorted.slice(0, 3).map((team: any) => ({
       id: team.team_id,
       name: team.team_name,
-      photo: team.team_logo, // renderStatCard 규격에 맞추기 위해 logo 대신 photo 사용
-      team: "", // 팀 통계이므로 소속팀 표시 생략
+      photo: team.team_logo,
+      team: "",
       value: team.avg_goals_for || 0,
     }));
-  }, [teamData]);
+  }, [teamStatsData]);
 
-  // 🛡️ 최고의 방패: 경기당 최소 실점 (오름차순!)
+  // 2. 🛡️ 경기당 최소 실점 (오름차순!)
   const unifiedTopDefending = useMemo(() => {
-    if (!teamData || teamData.length === 0) return [];
+    if (!teamStatsData || teamStatsData.length === 0) return [];
 
-    const sorted = [...teamData].sort(
-      (a: any, b: any) => (a.avg_goals_against || 0) - (b.avg_goals_against || 0)
+    const sorted = [...teamStatsData].sort(
+      (a: any, b: any) =>
+        (a.avg_goals_against || 0) - (b.avg_goals_against || 0),
     );
 
     return sorted.slice(0, 3).map((team: any) => ({
       id: team.team_id,
       name: team.team_name,
-      photo: team.team_logo, 
-      team: "", 
+      photo: team.team_logo,
+      team: "",
       value: team.avg_goals_against || 0,
     }));
-  }, [teamData]);
+  }, [teamStatsData]);
+
+  // 3. 🏆 최고 승률 (내림차순)
+  const unifiedTopWinRate = useMemo(() => {
+    if (!teamStatsData || teamStatsData.length === 0) return [];
+
+    const sorted = [...teamStatsData].sort(
+      (a: any, b: any) => (b.win_rate || 0) - (a.win_rate || 0),
+    );
+
+    return sorted.slice(0, 3).map((team: any) => ({
+      id: team.team_id,
+      name: team.team_name,
+      photo: team.team_logo,
+      team: "",
+      // 💡 승률은 % 텍스트를 붙여줍니다
+      value: `${team.win_rate || 0}%`,
+    }));
+  }, [teamStatsData]);
+
+  const unifiedTopCleanSheets = useMemo(() => {
+    if (!teamStatsData || teamStatsData.length === 0) return [];
+
+    const sorted = [...teamStatsData].sort(
+      (a: any, b: any) => (b.clean_sheets || 0) - (a.clean_sheets || 0),
+    );
+
+    return sorted.slice(0, 3).map((team: any) => ({
+      id: team.team_id,
+      name: team.team_name,
+      photo: team.team_logo,
+      team: "",
+      value: team.clean_sheets || 0,
+    }));
+  }, [teamStatsData]);
+
+  const unifiedTopStreakWins = useMemo(() => {
+    if (!teamStatsData || teamStatsData.length === 0) return [];
+
+    const sorted = [...teamStatsData].sort(
+      (a: any, b: any) => (b.streak_wins || 0) - (a.streak_wins || 0),
+    );
+
+    return sorted.slice(0, 3).map((team: any) => ({
+      id: team.team_id,
+      name: team.team_name,
+      photo: team.team_logo,
+      team: "",
+      value: team.streak_wins || 0,
+    }));
+  }, [teamStatsData]);
+
+  const unifiedTopGoalDifference = useMemo(() => {
+    if (!teamStatsData || teamStatsData.length === 0) return [];
+
+    const sorted = [...teamStatsData].sort(
+      (a: any, b: any) => (b.goal_difference || 0) - (a.goal_difference || 0),
+    );
+
+    return sorted.slice(0, 3).map((team: any) => ({
+      id: team.team_id,
+      name: team.team_name,
+      photo: team.team_logo,
+      team: "",
+      value: team.goal_difference || 0,
+    }));
+  }, [teamStatsData]);
 
   // 💡 선수 통계에서 가져온 완벽한 FotMob 스타일 카드 컴포넌트
   const renderStatCard = (
@@ -107,7 +189,6 @@ export default function TeamStatisticsTab({ leagueId, season }: Props) {
             <span className="text-white font-bold text-[15px] truncate leading-tight mb-0.5">
               {rank1.name}
             </span>
-            {/* 팀 통계에서는 소속팀 이름이 없으므로 빈 공간 방지 차원에서 생략 가능 */}
           </div>
 
           <div className="flex flex-col items-end justify-center shrink-0 pl-2">
@@ -156,7 +237,6 @@ export default function TeamStatisticsTab({ leagueId, season }: Props) {
     );
   };
 
-  // ⏳ 선수 통계 탭과 동일한 로딩 UI
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-24 w-full h-full">
@@ -180,20 +260,48 @@ export default function TeamStatisticsTab({ leagueId, season }: Props) {
           주요 팀 통계
         </h2>
 
-        {/* 💡 그리드 레이아웃: PC에서는 3열(가로로 남은 한자리는 나중에 다른 지표로 채울 수 있습니다) */}
+        {/* 💡 그리드 레이아웃: PC에서는 3열 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {renderStatCard(
             "경기당 최다 득점",
             unifiedTopScoring,
-            "text-[#2b7fff]", // 파란색으로 공격력 강조
-            <Target className="w-[18px] h-[18px] text-[#2b7fff]" />
+            "text-[#2b7fff]",
+            <Plus className="w-[18px] h-[18px] text-[#2b7fff]" />,
           )}
-          
+
           {renderStatCard(
             "경기당 최소 실점",
             unifiedTopDefending,
-            "text-[#00bc7d]", // 초록색으로 수비 안정감 강조
-            <Shield className="w-[18px] h-[18px] text-[#00bc7d]" />
+            "text-[#00bc7d]",
+            <Minus className="w-[18px] h-[18px] text-[#00bc7d]" />,
+          )}
+
+          {renderStatCard(
+            "최고 승률",
+            unifiedTopWinRate,
+            "text-[#ffc700]",
+            <Percent className="w-[18px] h-[18px] text-[#ffc700]" />,
+          )}
+
+          {renderStatCard(
+            "클린시트",
+            unifiedTopCleanSheets,
+            "text-[#00bc7d]",
+            <Shield className="w-[18px] h-[18px] text-[#00bc7d]" />,
+          )}
+
+          {renderStatCard(
+            "최다 연승",
+            unifiedTopStreakWins,
+            "text-[#00bc7d]",
+            <Flame className="w-[18px] h-[18px] text-[#FF3030]" />,
+          )}
+
+          {renderStatCard(
+            "골 득실차",
+            unifiedTopGoalDifference,
+            "text-[#00bc7d]",
+            <TrendingUp className="w-[18px] h-[18px] text-[#00bc7d]" />,
           )}
         </div>
       </div>

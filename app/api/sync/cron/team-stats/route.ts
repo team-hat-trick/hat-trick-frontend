@@ -53,6 +53,14 @@ export async function GET(request: Request) {
       if (statData.response) {
         const stats = statData.response;
 
+        const playedMatches = Number(stats.fixtures.played.total) || 0;
+        const totalWins = Number(stats.fixtures.wins.total) || 0;
+
+        const winRate =
+          playedMatches > 0
+            ? parseFloat(((totalWins / playedMatches) * 100).toFixed(2))
+            : 0;
+
         allTeamStats.push({
           league_id: LEAGUE_ID,
           season: SEASON,
@@ -69,8 +77,14 @@ export async function GET(request: Request) {
           goals_for: stats.goals.for.total.total || 0,
           goals_against: stats.goals.against.total.total || 0,
 
-          avg_goals_for: parseFloat(stats.goals.for.average.total as string) || 0,
-          avg_goals_against: parseFloat(stats.goals.against.average.total as string) || 0,
+          avg_goals_for:
+            parseFloat(stats.goals.for.average.total as string) || 0,
+          avg_goals_against:
+            parseFloat(stats.goals.against.average.total as string) || 0,
+
+          win_rate: winRate,
+          streak_wins: stats.biggest.streak.wins || 0,
+          goal_difference: Number(stats.goals.for.total.total) - Number(stats.goals.against.total.total) || 0,
 
           clean_sheets: stats.clean_sheet.total || 0,
           failed_to_score: stats.failed_to_score.total || 0,

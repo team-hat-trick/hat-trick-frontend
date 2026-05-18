@@ -1,22 +1,21 @@
 import { createBrowserSupabaseClient } from "@/lib/utils/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetAvgGoals = (leagueId: number, season: number) => {
+// 💡 훅 이름을 더 범용적인 useGetTeamStats로 변경!
+export const useGetTeamStats = (leagueId: number, season: number) => {
   const supabase = createBrowserSupabaseClient();
 
   return useQuery({
-    queryKey: ["team-avg-goals", leagueId, season],
+    // 💡 쿼리 키도 변경해서 이전 캐시와 꼬이는 것을 방지합니다.
+    queryKey: ["team-stats", leagueId, season],
     enabled: !!leagueId && !!season && !isNaN(season),
     queryFn: async () => {
-      // 💡 1. 선수 테이블(statistics_players)이 아닌 팀 테이블(statistics_teams)을 조회합니다!
       let { data, error } = await supabase
         .from("statistics_teams")
         .select("*")
         .eq("league_id", leagueId)
-        .eq("season", season)
-        // 💡 2. 평균 득점이 가장 높은 팀 순서대로 내림차순 정렬
-        .order("avg_goals_for", { ascending: false })
-        .limit(5);
+        .eq("season", season); 
+        // 🚨 1. order와 limit을 완전히 제거했습니다! (해당 리그 20개 팀 전부 가져옴)
 
       if (error) throw error;
 
@@ -25,7 +24,6 @@ export const useGetAvgGoals = (leagueId: number, season: number) => {
           `[${leagueId} 리그] 팀 통계 DB가 비어있어 API 동기화를 시작합니다... ⏳`
         );
 
-        // 🚨 3. 팀 통계 동기화 API 경로로 호출!
         const syncRes = await fetch(
           `/api/sync/cron/team-stats?league=${leagueId}&season=${season}`
         );
@@ -34,21 +32,18 @@ export const useGetAvgGoals = (leagueId: number, season: number) => {
 
         console.log(`[${leagueId} 리그] 동기화 완료! DB에서 다시 꺼내옵니다. ✅`);
 
-        // 동기화 후 다시 쿼리
         const { data: newData, error: newError } = await supabase
           .from("statistics_teams")
           .select("*")
           .eq("league_id", leagueId)
-          .eq("season", season)
-          .order("avg_goals_for", { ascending: false })
-          .limit(5);
+          .eq("season", season);
+          // 🚨 2. 동기화 후 다시 꺼내올 때도 order와 limit 제거!
 
         if (newError) throw newError;
         data = newData;
       }
       return data;
     },
-    // 팀 통계는 시즌 중에 선수 스탯처럼 분 단위로 휙휙 바뀌지 않으니 StaleTime을 길게 줘도 좋습니다.
-    staleTime: 1000 * 60 * 60 * 24, // 24시간
+    staleTime: 1000 * 60 * 60 * 24, // 24시간 캐싱 유지
   });
 };
